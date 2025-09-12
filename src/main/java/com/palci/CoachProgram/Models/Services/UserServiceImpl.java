@@ -7,12 +7,15 @@ import com.palci.CoachProgram.Models.Exceptions.DuplicateEmailException;
 import com.palci.CoachProgram.Models.Exceptions.PasswordsDoNotEqualException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService{
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public void create(UserDTO userDTO, boolean isAdmin) {
@@ -25,7 +28,7 @@ public class UserServiceImpl implements UserService{
 
         userEntity.setEmail(userDTO.getEmail());
         userEntity.setUsername(userDTO.getUsername());
-        userEntity.setPassword(userDTO.getPassword()); // TODO Password encoder
+        userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         userEntity.setAdmin(isAdmin);
 
