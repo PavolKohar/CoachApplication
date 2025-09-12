@@ -1,11 +1,13 @@
 package com.palci.CoachProgram.Controllers;
 
 
+import com.palci.CoachProgram.Data.Entities.TrainingEntity;
 import com.palci.CoachProgram.Data.Entities.UserEntity;
 import com.palci.CoachProgram.Data.Repositories.TrainingRepository;
 import com.palci.CoachProgram.Models.DTO.ClientDTO;
 import com.palci.CoachProgram.Models.Enums.Program;
 import com.palci.CoachProgram.Models.Services.ClientService;
+import com.palci.CoachProgram.Models.Services.TrainingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -26,6 +28,8 @@ public class ClientController {
     ClientService clientService;
     @Autowired
     TrainingRepository trainingRepository;
+    @Autowired
+    TrainingService trainingService;
 
     //Badges
     @ModelAttribute
@@ -49,6 +53,8 @@ public class ClientController {
         List<ClientDTO> clients = clientService.getDTOClientsForUser(userEntity);
 
         model.addAttribute("clients",clients);
+        List<TrainingEntity> todayTrainings = trainingService.getTodayTrainings(userEntity);
+        model.addAttribute("todayTrainings",todayTrainings);
         return "pages/clients/index";
     }
 
@@ -68,7 +74,12 @@ public class ClientController {
             case "passive" -> clients = clientService.getClientsByActiveStatus(userEntity,false);
             default -> clients = clientService.getDTOClientsForUser(userEntity);
         }
+
+        List<TrainingEntity> todayTrainings = trainingService.getTodayTrainings(userEntity);
+        model.addAttribute("todayTrainings",todayTrainings);
         model.addAttribute("clients",clients);
+
+
         return "pages/clients/index";
     }
 

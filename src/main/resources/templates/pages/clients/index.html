@@ -9,14 +9,56 @@
 
 
     <!-- User card START -->
+<div class="row">
+<!-- LEFT SIDE - User Info Card -->
+
     <div class="col-md-4">
         <div class="card h-100">
             <div class="card-body">
                 <h5 class="card-title" th:text="${name}">Username</h5>
+                <h6 class="card-subtitle mb-3 text-muted">
+                    Clients count: <span th:text="${allClients}">0</span>
+                </h6>
+                <a th:href="@{/training}" class="btn btn-success w-100">Create Training Plan</a>
             </div>
         </div>
     </div>
-    <!-- User card END -->
+
+<!-- RIGHT SIDE - Today's Trainings -->
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title mb-0">Today’s Trainings</h5>
+                    <a href="#" class="btn btn-outline-primary btn-sm">Show Calendar</a>
+                </div>
+
+                <!-- Scrollable list -->
+                <div style="max-height: 100px; overflow-y: auto;">
+                    <p th:if="${#lists.isEmpty(todayTrainings)}">Žiadne tréningy na dnes.</p>
+                    <ul class="list-group">
+                        <li th:each="training : ${todayTrainings}" class="list-group-item d-flex justify-content-between">
+                            <div>
+                                <span th:text="${training.client.firstName + ' ' + training.client.lastName}">John Doe</span> -
+                                <span th:text="${training.time}"></span>
+
+                            </div>
+                            <div>
+                                <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-primary">🕐</a>
+                                <a th:href="@{'/training/done/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-success">✔️</a>
+                            </div>
+
+
+                        </li>
+
+                        <!-- Add more training items here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 
 

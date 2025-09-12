@@ -10,6 +10,7 @@ import com.palci.CoachProgram.Data.Repositories.TrainingRepository;
 import com.palci.CoachProgram.Data.Repositories.WeightRepository;
 import com.palci.CoachProgram.Models.DTO.ClientDTO;
 import com.palci.CoachProgram.Models.Services.ClientService;
+import com.palci.CoachProgram.Models.Services.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
@@ -32,6 +33,7 @@ public class ClientDetailController {
     WeightRepository weightRepository;
     @Autowired
     TrainingRepository trainingRepository;
+
 
     @GetMapping("/{clientId}")
     public String renderDetail(@AuthenticationPrincipal UserEntity userEntity, @PathVariable long clientId, Model model){
@@ -69,8 +71,6 @@ public class ClientDetailController {
 
         model.addAttribute("data",weights);
         model.addAttribute("labels",dates);
-
-
 
 
         return "pages/clients/detail";
