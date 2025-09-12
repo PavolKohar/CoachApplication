@@ -3,8 +3,10 @@ package com.palci.CoachProgram.Controllers;
 import com.palci.CoachProgram.Data.Entities.ClientEntity;
 import com.palci.CoachProgram.Data.Entities.TrainingEntity;
 import com.palci.CoachProgram.Data.Entities.UserEntity;
+import com.palci.CoachProgram.Data.Entities.WeightEntity;
 import com.palci.CoachProgram.Data.Repositories.ClientRepository;
 import com.palci.CoachProgram.Data.Repositories.TrainingRepository;
+import com.palci.CoachProgram.Data.Repositories.WeightRepository;
 import com.palci.CoachProgram.Models.DTO.PlanDTO;
 import com.palci.CoachProgram.Models.Services.ClientService;
 import com.palci.CoachProgram.Models.Services.TrainingService;
@@ -30,6 +32,8 @@ public class TrainingController {
     TrainingService trainingService;
     @Autowired
     TrainingRepository trainingRepository;
+    @Autowired
+    WeightRepository weightRepository;
 
 
     @GetMapping

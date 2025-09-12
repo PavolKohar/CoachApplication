@@ -172,7 +172,7 @@
             <td th:text="${entry.difference}"></td>
             <!-- deleting entities -->
             <td>
-                <a th:href="@{'/clients/remove-entry/'+${clientDTO.clientId}+ '/' + ${entry.changeId}}" class="btn btn-danger">🗑️</a>
+                <a th:href="@{'/clients/detail/remove-entry/'+${clientDTO.clientId}+ '/' + ${entry.changeId}}" class="btn btn-danger">🗑️</a>
             </td>
         </tr>
         </tbody>

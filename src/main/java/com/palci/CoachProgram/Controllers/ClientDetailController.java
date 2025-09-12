@@ -85,4 +85,22 @@ public class ClientDetailController {
         return "redirect:/clients/detail/{clientId}";
     }
 
+
+    // Removing entry from table
+    @GetMapping("/remove-entry/{clientId}/{changeId}")
+    public String removeEntry(@PathVariable long changeId,@PathVariable long clientId,@AuthenticationPrincipal UserEntity userEntity){
+        WeightEntity weightEntity = weightRepository.findById(changeId).orElseThrow();
+        ClientEntity clientEntity = clientRepository.findById(clientId).orElseThrow();
+
+        // Basic authorization
+        if (weightEntity.getClient().getClientId() == clientId && clientEntity.getOwner().getUserId() == userEntity.getUserId()){
+            weightRepository.deleteById(changeId);
+        }else {
+            throw new AccessDeniedException("You are not allowed to delete this record.");
+
+        }
+
+        return "redirect:/clients/detail/{clientId}";
+    }
+
 }
