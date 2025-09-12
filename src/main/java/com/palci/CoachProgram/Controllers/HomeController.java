@@ -63,7 +63,7 @@ public class HomeController {
         redirectAttributes.addFlashAttribute("success","User was register");
 
 
-        return "pages/home/index";
+        return "pages/home/login";
     }
 
     @GetMapping("login")
