@@ -29,7 +29,7 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false)
     private boolean admin;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "owner",fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClientEntity> clients = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
