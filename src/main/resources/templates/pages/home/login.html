@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}" >
+
+</head>
+<body class="bg-light vh-100">
+
+<header th:replace="~{fragments/layout.html :: header}" ></header>
+
+
+<div th:if="${param.error}" class="alert alert-danger">Nesprávny email alebo heslo.</div>
+<div th:if="${param.logout}" class="alert alert-info">Bol si odhlásený.</div>
+
+
+
+<div class="container d-flex justify-content-center mt-5">
+    <form th:action="@{/login}" method="post" class="p-4 border rounded shadow-sm" style="max-width: 400px; width: 100%;">
+
+
+        <h3 class="text-center mb-4">Sign Up</h3>
+
+        <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+            <label for="email">Email address</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            <label for="password">Password</label>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100 mb-2">Sign Up</button>
+
+        <div class="text-center">
+            <a th:href="@{/register}">Register</a>
+        </div>
+
+    </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

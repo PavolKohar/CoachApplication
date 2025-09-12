@@ -65,4 +65,9 @@ public class HomeController {
 
         return "pages/home/index";
     }
+
+    @GetMapping("login")
+    public String renderLoginForm(){
+        return "pages/home/login";
+    }
 }
