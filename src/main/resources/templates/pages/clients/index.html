@@ -6,14 +6,22 @@
 <body class="bg-light" >
 <header th:replace="~{fragments/layout.html ::header}"></header>
 
+<div class="container my-4">
+
+    <!-- User card START -->
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${name}">Username</h5>
+            </div>
+        </div>
+    </div>
+    <!-- User card END -->
 
 
-<h1>Profile page</h1>
 
 
-
-
-
+</div> <!-- End of container -->
 
 <script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
 </body>
