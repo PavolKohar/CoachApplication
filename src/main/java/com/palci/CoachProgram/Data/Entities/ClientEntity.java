@@ -1,5 +1,6 @@
 package com.palci.CoachProgram.Data.Entities;
 
+import com.palci.CoachProgram.Models.Enums.Program;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -41,8 +42,9 @@ public class ClientEntity {
     private String sex;
 
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String program;
+    private Program program;
 
     @Column(nullable = false)
     private boolean active;
@@ -133,11 +135,11 @@ public class ClientEntity {
         this.sex = sex;
     }
 
-    public String getProgram() {
+    public Program getProgram() {
         return program;
     }
 
-    public void setProgram(String program) {
+    public void setProgram(Program program) {
         this.program = program;
     }
 

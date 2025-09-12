@@ -1,5 +1,6 @@
 package com.palci.CoachProgram.Models.DTO;
 
+import com.palci.CoachProgram.Models.Enums.Program;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -37,7 +38,7 @@ public class ClientDTO {
     private String sex;
 
     @NotNull(message = "Please fill in the program")
-    private String program;
+    private Program program;
 
     private boolean active = true;
 
@@ -139,11 +140,11 @@ public class ClientDTO {
         this.sex = sex;
     }
 
-    public String getProgram() {
+    public Program getProgram() {
         return program;
     }
 
-    public void setProgram(String program) {
+    public void setProgram(Program program) {
         this.program = program;
     }
 
