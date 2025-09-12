@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,6 +28,13 @@ public class UserEntity implements UserDetails {
 
     @Column(nullable = false)
     private boolean admin;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ClientEntity> clients = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TrainingEntity> trainings = new ArrayList<>();
+
 
     // Getters and setters
 
@@ -95,5 +103,21 @@ public class UserEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public List<TrainingEntity> getTrainings() {
+        return trainings;
+    }
+
+    public void setTrainings(List<TrainingEntity> trainings) {
+        this.trainings = trainings;
+    }
+
+    public List<ClientEntity> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<ClientEntity> clients) {
+        this.clients = clients;
     }
 }
