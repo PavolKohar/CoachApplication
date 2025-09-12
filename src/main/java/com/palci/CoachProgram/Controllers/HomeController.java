@@ -14,4 +14,10 @@ public class HomeController {
     public String renderHomePage(){
         return "pages/home/index";
     }
+
+
+    @GetMapping("about-us")
+    public String renderAboutUs(){
+        return "pages/home/about";
+    }
 }
