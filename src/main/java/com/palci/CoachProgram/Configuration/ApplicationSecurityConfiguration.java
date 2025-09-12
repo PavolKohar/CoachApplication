@@ -25,7 +25,7 @@ public class ApplicationSecurityConfiguration {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/account/login?logout")
+                        .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 );
 
