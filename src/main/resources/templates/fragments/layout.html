@@ -22,11 +22,11 @@
         <div class="navbar-nav ms-auto">
           <a class="nav-link" th:href="@{/about-us}">About us</a>
           <a class="nav-link" th:href="@{/contact}">Contact</a>
-          <a class="nav-link" th:href="@{/profile}">Profile</a>
-          <a class="btn btn-success mx-1"  th:href="@{/login}">Sign up</a>
-          <a class="btn btn-success"  th:href="@{/register}">Register</a>
-          <form th:action="@{/account/logout}" method="post">
-            <button type="submit" class="btn btn-danger"  >Logout</button>
+          <a class="nav-link" sec:authorize="isAuthenticated()"  th:href="@{/profile}">Profile</a>
+          <a class="btn btn-success mx-1" sec:authorize="isAnonymous()" th:href="@{/login}">Sign up</a>
+          <a class="btn btn-success" sec:authorize="isAnonymous()" th:href="@{/register}">Register</a>
+          <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-danger" sec:authorize="isAuthenticated()" >Logout</button>
           </form>
 
         </div>
