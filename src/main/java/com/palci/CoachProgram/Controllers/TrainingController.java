@@ -1,19 +1,20 @@
 package com.palci.CoachProgram.Controllers;
 
 import com.palci.CoachProgram.Data.Entities.ClientEntity;
+import com.palci.CoachProgram.Data.Entities.TrainingEntity;
 import com.palci.CoachProgram.Data.Entities.UserEntity;
 import com.palci.CoachProgram.Data.Repositories.ClientRepository;
+import com.palci.CoachProgram.Data.Repositories.TrainingRepository;
 import com.palci.CoachProgram.Models.DTO.PlanDTO;
 import com.palci.CoachProgram.Models.Services.ClientService;
+import com.palci.CoachProgram.Models.Services.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,24 +26,52 @@ public class TrainingController {
     ClientRepository clientRepository;
     @Autowired
     ClientService clientService;
+    @Autowired
+    TrainingService trainingService;
+    @Autowired
+    TrainingRepository trainingRepository;
 
 
     @GetMapping
-    public String renderTrainingPlanner(@ModelAttribute PlanDTO planDTO, @AuthenticationPrincipal UserEntity userEntity, Model model){
+    public String renderTrainingPlanner(@ModelAttribute PlanDTO planDTO, @AuthenticationPrincipal UserEntity userEntity, Model model) {
         List<ClientEntity> clients = clientRepository.findAllByOwner(userEntity);
-        model.addAttribute("clients",clients);
+        model.addAttribute("clients", clients);
 
 
         return "pages/training/createForm";
     }
 
     @GetMapping("/{clientId}")
-    public String renderTrainingPlanerForClient(@ModelAttribute PlanDTO planDTO, @AuthenticationPrincipal UserEntity userEntity, @PathVariable long clientId, Model model){
+    public String renderTrainingPlanerForClient(@ModelAttribute PlanDTO planDTO, @AuthenticationPrincipal UserEntity userEntity, @PathVariable long clientId, Model model) {
         ClientEntity client = clientService.getByIdOrThrow(clientId);
 
-        model.addAttribute("clients",client);
+        model.addAttribute("clients", client);
 
 
         return "pages/training/createFormForClient";
+    }
+
+    @PostMapping("/create")
+    public String createTrainingPlan(@ModelAttribute PlanDTO planDTO, @AuthenticationPrincipal UserEntity userEntity) {
+        ClientEntity client = clientService.getByIdOrThrow(planDTO.getClientId());
+        trainingService.createPlan(client, userEntity, planDTO.getWeeks(), planDTO.getWorkoutsPerWeek(), planDTO.getLocalDate(), planDTO.getTime());
+
+
+        return "redirect:/clients/detail/" + client.getClientId();
+    }
+
+    @GetMapping("/done/{trainingId}/{clientId}")
+    public String trainingDone(@AuthenticationPrincipal UserEntity userEntity, @PathVariable long trainingId,@PathVariable long clientId){
+        TrainingEntity trainingEntity = trainingRepository.findById(trainingId).orElseThrow();
+        ClientEntity clientEntity = clientService.getByIdOrThrow(clientId);
+
+        if (trainingEntity.getClient().getClientId() != clientEntity.getClientId() || clientEntity.getOwner().getUserId() != userEntity.getUserId()){
+            throw new AccessDeniedException("You have not right to do this action.");
+        }else {
+            trainingEntity.setDone(true);
+            trainingRepository.save(trainingEntity);
+        }
+
+        return "redirect:/clients/detail/{clientId}";
     }
 }
