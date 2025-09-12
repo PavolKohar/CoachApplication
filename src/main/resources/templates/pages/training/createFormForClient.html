@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+
+</head>
+<body class="bg-light" >
+<header th:replace="~{fragments/layout.html ::header}"></header>
+
+
+<form th:action="@{/training/create}" th:object="${planDTO}" method="post" class="p-4 border rounded bg-light">
+
+  <div class="mb-3">
+    <label for="clientSelect" class="form-label">Select Client</label>
+    <select class="form-select" id="clientSelect" name="clientId" required>
+      <option th:each="client : ${clients}" th:value="${client.clientId}" th:field="*{clientId}" th:text="${client.firstName + ' ' + client.lastName}"></option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="weeks" class="form-label">Number of Weeks</label>
+    <input type="number" class="form-control" th:field="*{weeks}" id="weeks" name="weeks" min="1" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="time" class="form-label">Preferred time</label>
+    <input type="time" class="form-control" th:field="*{time}" id="time" name="time" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="workoutsPerWeek" class="form-label">Workouts per Week</label>
+    <input type="number" class="form-control" id="workoutsPerWeek" th:field="*{workoutsPerWeek}" name="workoutsPerWeek" min="2" max="6" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="startDate" class="form-label">Starting Date</label>
+    <input type="date" class="form-control" id="startDate" th:field="*{localDate}" name="startDate" required>
+  </div>
+
+  <button type="submit" class="btn btn-success w-100">Generate Plan</button>
+
+</form>
+
+
+
+
+
+
+<footer th:replace="~{fragments/layout.html :: footer}"></footer>
+<script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

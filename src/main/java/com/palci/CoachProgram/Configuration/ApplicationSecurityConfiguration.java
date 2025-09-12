@@ -21,7 +21,7 @@ public class ApplicationSecurityConfiguration {
                 .formLogin(form->form
                         .loginPage("/login") // Login page
                         .loginProcessingUrl("/login") // Post method
-                        .defaultSuccessUrl("/",true) // Redirect
+                        .defaultSuccessUrl("/clients",true) // Redirect
                         .usernameParameter("email")
                         .permitAll()
                 )
