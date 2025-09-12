@@ -20,4 +20,9 @@ public class HomeController {
     public String renderAboutUs(){
         return "pages/home/about";
     }
+
+    @GetMapping("contact")
+    public String renderContact(){
+        return "pages/home/contact";
+    }
 }
