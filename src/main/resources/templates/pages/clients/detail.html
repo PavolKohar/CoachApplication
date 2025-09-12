@@ -97,7 +97,7 @@
 
         <div class="row">
 
-            <div class="col-4">
+            <div class="col-8">
                 <h5>Najbližšie tréningy</h5>
                 <table class="table">
                     <thead>
@@ -108,18 +108,18 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="training : ${trainings}">
+                    <tr th:each="training : ${fiveNextTrainings}">
                         <td th:text="${training.date + '-' + training.time}"></td>
                         <td th:text="${training.workout}"></td>
                         <!-- deleting entities -->
-                        <td>
-                            <a th:href="@{'/training/done/' + ${training.trainingId} + '/' + ${clientDTO.clientId}}" class="btn btn-success">✔️</a>
-                            <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${clientDTO.clientId}}" class="btn btn-primary">🕐</a>
+                        <td class="py-1">
+                            <a th:href="@{'/training/done/' + ${training.trainingId} + '/' + ${clientDTO.clientId}}" class="btn btn-sm btn-success">✔️</a>
+                            <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${clientDTO.clientId}}" class="btn btn-sm btn-primary">🕐</a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <a href="#" class="btn btn-success my-2" >See all</a>
+                <a href="#trainingsManagement" class="btn btn-success my-2" >See all</a>
 
             </div>
 
@@ -140,21 +140,10 @@
                     </tr>
                     </tbody>
                 </table>
-                <a href="#" class="btn btn-success my-2" >See all</a>
+                <a href="#weightEntry" class="btn btn-success my-2" >See all</a>
 
             </div>
 
-            <div class="col-4">
-                <h5>Štatistika</h5>
-                <ul class="list-group">
-                    <li class="list-group-item">Cras justo odio</li>
-                    <li class="list-group-item">Morbi leo risus</li>
-                    <li class="list-group-item">Porta ac consectetur ac</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
-                </ul>
-                <a href="#" class="btn btn-success my-2" >See all</a>
-
-            </div>
 
         </div>
     </div>
@@ -165,7 +154,7 @@
     <h3>Weight history</h3>
     <canvas id="weightChart"></canvas>
 
-    <table class="table mt-3 bg-light">
+    <table id="weightEntry" class="table mt-3 bg-light">
         <thead>
         <tr>
             <th>Date</th>
@@ -189,9 +178,34 @@
         </tbody>
     </table>
 
+</div>
 
+<hr class="mt-0">
+<div class="bg-white">
+    <div class="container">
+        <h3>Training management</h3>
+        <table id="trainingsManagement" class="table">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Workout</th>
+                <th>Done</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="training : ${trainings}">
+                <td th:text="${training.date + '-' + training.time}"></td>
+                <td th:text="${training.workout}"></td>
+                <!-- deleting entities -->
+                <td>
+                    <a th:href="@{'/training/done/' + ${training.trainingId} + '/' + ${clientDTO.clientId}}" class="btn btn-success">✔️</a>
+                    <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${clientDTO.clientId}}" class="btn btn-primary">🕐</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-
+    </div>
 </div>
 
 

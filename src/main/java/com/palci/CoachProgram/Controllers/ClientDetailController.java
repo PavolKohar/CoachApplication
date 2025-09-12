@@ -56,6 +56,9 @@ public class ClientDetailController {
         trainingEntities = trainingEntities.stream().filter(t-> !t.isDone()).toList();
         model.addAttribute("trainings",trainingEntities);
 
+        List<TrainingEntity> nextFiveTrainings = trainingRepository.findTop5ByClientAndDoneFalseOrderByDateAsc(entity);
+        model.addAttribute("fiveNextTrainings",nextFiveTrainings);
+
         // Generating values for chart.js
         List<String> dates = weightHistory.stream()
                 .map(entry->entry.getDate().toString())
