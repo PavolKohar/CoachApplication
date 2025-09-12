@@ -103,4 +103,26 @@ public class ClientDetailController {
         return "redirect:/clients/detail/{clientId}";
     }
 
+    // Deleting client from client repository
+    @GetMapping("/delete/{clientId}")
+    public String deleteClient(@PathVariable long clientId,@AuthenticationPrincipal UserEntity userEntity){
+        ClientDTO clientDTO = clientService.getClientById(clientId);
+
+        if (clientDTO.getOwnerId() != userEntity.getUserId()){
+            throw new AccessDeniedException("You are not allowed to edit this client");
+        }
+
+        clientService.deleteById(clientId);
+
+        return "redirect:/clients";
+
+    }
+
+    @GetMapping("/toggle/{clientId}")
+    public String changeActiveStatus(@PathVariable long clientId){
+        clientService.toggleActive(clientId);
+
+        return "redirect:/clients/detail/{clientId}";
+    }
+
 }

@@ -26,7 +26,7 @@
 
                 <!-- Aktivácia/Deaktivácia -->
                 <li>
-                    <a th:href="@{'/clients/toggle/' + ${clientDTO.clientId}}"
+                    <a th:href="@{'/clients/detail/toggle/' + ${clientDTO.clientId}}"
                        class="dropdown-item"
                        th:classappend="${clientDTO.active} ? 'text-danger' : 'text-success'"
                        th:text="${clientDTO.active} ? 'Deactivate' : 'Activate'">
@@ -41,7 +41,7 @@
                 </li>
                 <!-- Vymazanie klienta -->
                 <li>
-                    <a th:href="@{'/clients/delete/' + ${clientDTO.clientId}}" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this client?')">
+                    <a th:href="@{'/clients/detail/delete/' + ${clientDTO.clientId}}" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this client?')">
                         Remove client
                     </a>
                 </li>
