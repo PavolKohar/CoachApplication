@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+
+</head>
+<body class="bg-light" >
+<header th:replace="~{fragments/layout.html ::header}"></header>
+
+
+
+
+<div class="container-fluid bg-light d-flex align-items-center justify-content-center min-vh-100">
+  <div class="container bg-white p-5 rounded shadow text-center">
+    <h1 class="display-3">Training APP</h1>
+    <p class="lead">This is app created for trainers! You can record progress of your clients and planing them their training plans </p>
+    <hr class="my-4">
+    <p>Are you ready? Just click</p>
+    <a class="btn btn-dark btn-lg" role="button" href="#">Start Today</a>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
