@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface WeightRepository extends JpaRepository<WeightEntity,Long> {
     List<WeightEntity> findAllByClientOrderByDateAsc(ClientEntity client);
+    List<WeightEntity> findTop5ByClientOrderByDateDesc(ClientEntity client);
 
 }

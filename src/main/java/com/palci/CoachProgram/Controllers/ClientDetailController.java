@@ -14,9 +14,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,8 +33,8 @@ public class ClientDetailController {
     public String renderDetail(@AuthenticationPrincipal UserEntity userEntity, @PathVariable long clientId, Model model){
         ClientDTO clientDTO = clientService.getClientById(clientId);
         ClientEntity entity = clientRepository.findById(clientId).orElseThrow();
-
         List<WeightEntity> weightHistory = weightRepository.findAllByClientOrderByDateAsc(entity);
+        List<WeightEntity> lastFiveWeightHistory = weightRepository.findTop5ByClientOrderByDateDesc(entity);
 
         if (clientDTO.getOwnerId() != userEntity.getUserId()){
             throw new AccessDeniedException("You are not allowed to edit this client");
@@ -46,11 +44,21 @@ public class ClientDetailController {
         model.addAttribute("clientDTO",clientDTO);
         model.addAttribute("age",clientDTO.getAge());
         model.addAttribute("progress",clientService.giveProgress(clientId));
+        model.addAttribute("history",lastFiveWeightHistory);
 
 
 
 
         return "pages/clients/detail";
+    }
+
+
+    @PostMapping("/{clientId}")
+    public String updateCurrentWeight(@PathVariable long clientId,@ModelAttribute("clientDTO")ClientDTO clientDTO){
+
+        clientService.updateCurrentWeight(clientId,clientDTO.getCurrentWeight());
+
+        return "redirect:/clients/detail/{clientId}";
     }
 
 }
