@@ -2,9 +2,11 @@ package com.palci.CoachProgram.Controllers;
 
 
 import com.palci.CoachProgram.Data.Entities.ClientEntity;
+import com.palci.CoachProgram.Data.Entities.TrainingEntity;
 import com.palci.CoachProgram.Data.Entities.UserEntity;
 import com.palci.CoachProgram.Data.Entities.WeightEntity;
 import com.palci.CoachProgram.Data.Repositories.ClientRepository;
+import com.palci.CoachProgram.Data.Repositories.TrainingRepository;
 import com.palci.CoachProgram.Data.Repositories.WeightRepository;
 import com.palci.CoachProgram.Models.DTO.ClientDTO;
 import com.palci.CoachProgram.Models.Services.ClientService;
@@ -28,6 +30,8 @@ public class ClientDetailController {
     ClientRepository clientRepository;
     @Autowired
     WeightRepository weightRepository;
+    @Autowired
+    TrainingRepository trainingRepository;
 
     @GetMapping("/{clientId}")
     public String renderDetail(@AuthenticationPrincipal UserEntity userEntity, @PathVariable long clientId, Model model){
@@ -44,7 +48,24 @@ public class ClientDetailController {
         model.addAttribute("clientDTO",clientDTO);
         model.addAttribute("age",clientDTO.getAge());
         model.addAttribute("progress",clientService.giveProgress(clientId));
-        model.addAttribute("history",lastFiveWeightHistory);
+        model.addAttribute("historyFive",lastFiveWeightHistory);
+        model.addAttribute("history",weightHistory);
+
+
+        List<TrainingEntity> trainingEntities = trainingRepository.findAllByClientOrderByDateAsc(entity);
+        trainingEntities = trainingEntities.stream().filter(t-> !t.isDone()).toList();
+        model.addAttribute("trainings",trainingEntities);
+
+        // Generating values for chart.js
+        List<String> dates = weightHistory.stream()
+                .map(entry->entry.getDate().toString())
+                .toList();
+        List<Double> weights = weightHistory.stream()
+                .map(WeightEntity::getNewWeight)
+                .toList();
+
+        model.addAttribute("data",weights);
+        model.addAttribute("labels",dates);
 
 
 

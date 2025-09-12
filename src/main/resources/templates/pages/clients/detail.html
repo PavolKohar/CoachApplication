@@ -98,12 +98,26 @@
 
             <div class="col-4">
                 <h5>Najbližšie tréningy</h5>
-                <ul class="list-group">
-                    <li class="list-group-item">Cras justo odio</li>
-                    <li class="list-group-item">Morbi leo risus</li>
-                    <li class="list-group-item">Porta ac consectetur ac</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
-                </ul>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Workout</th>
+                        <th>Done</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="training : ${trainings}">
+                        <td th:text="${training.date + '-' + training.time}"></td>
+                        <td th:text="${training.workout}"></td>
+                        <!-- deleting entities -->
+                        <td>
+                            <a th:href="@{'/training/done/' + ${training.trainingId} + '/' + ${clientDTO.clientId}}" class="btn btn-success">✔️</a>
+                            <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${clientDTO.clientId}}" class="btn btn-primary">🕐</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
                 <a href="#" class="btn btn-success my-2" >See all</a>
 
             </div>
@@ -118,7 +132,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="entry : ${history}">
+                    <tr th:each="entry : ${historyFive}">
                         <td th:text="${entry.date}"></td>
                         <td th:text="${entry.difference}"></td>
                         <!-- deleting entities -->
@@ -145,8 +159,71 @@
     </div>
 </div>
 
+<hr class="mt-0">
+<div class="container">
+    <h3>Weight history</h3>
+    <canvas id="weightChart"></canvas>
+
+    <table class="table mt-3 bg-light">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Old weight (kg)</th>
+            <th>New weight</th>
+            <th>Difference</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${history}">
+            <td th:text="${entry.date}"></td>
+            <td th:text="${entry.oldWeight}"></td>
+            <td th:text="${entry.newWeight}"></td>
+            <td th:text="${entry.difference}"></td>
+            <!-- deleting entities -->
+            <td>
+                <a th:href="@{'/clients/remove-entry/'+${clientDTO.clientId}+ '/' + ${entry.changeId}}" class="btn btn-danger">🗑️</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+
+
+</div>
+
+
+
 
 
 <script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:inline="javascript">
+    let labels = [[${labels}]];
+    let data = [[${data}]];
+
+    const ctx = document.getElementById('weightChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Weight Progress (kg)',
+                data: data,
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+</script>
 </body>
 </html>
