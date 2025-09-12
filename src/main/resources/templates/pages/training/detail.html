@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+
+</head>
+<body class="bg-light" >
+<header th:replace="~{fragments/layout.html ::header}"></header>
+
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="card-title">Edit Training</h3>
+
+      <form th:action="@{'/training/detail/' + ${trainingDTO.trainingId}}" method="post">
+        <!-- Date -->
+        <div class="mb-3">
+          <label for="date" class="form-label">Training Date</label>
+          <input type="date" class="form-control" id="date" name="date" th:value="${trainingDTO.date}" required>
+        </div>
+
+        <!-- Time -->
+        <div class="mb-3">
+          <label for="time" class="form-label">Training Time</label>
+          <input type="time" class="form-control" id="time" name="time" th:value="${trainingDTO.time}" required>
+        </div>
+
+        <!-- Workout -->
+        <div class="mb-3">
+          <label for="workout" class="form-label">Workout Description</label>
+          <input type="text" class="form-control" id="workout" name="workout" th:value="${trainingDTO.workout}" th:text="${trainingDTO.workout}" >
+        </div>
+
+        <!-- Done Checkbox -->
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="done" name="done" th:checked="${trainingDTO.done}">
+          <label class="form-check-label" for="done">
+            Mark as completed
+          </label>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Update Training</button>
+        <a th:href="@{/clients}" class="btn btn-secondary ms-2">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<footer th:replace="~{fragments/layout.html :: footer}"></footer>
+<script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

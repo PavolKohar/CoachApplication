@@ -8,6 +8,7 @@ import com.palci.CoachProgram.Data.Repositories.ClientRepository;
 import com.palci.CoachProgram.Data.Repositories.TrainingRepository;
 import com.palci.CoachProgram.Data.Repositories.WeightRepository;
 import com.palci.CoachProgram.Models.DTO.PlanDTO;
+import com.palci.CoachProgram.Models.DTO.TrainingDTO;
 import com.palci.CoachProgram.Models.Services.ClientService;
 import com.palci.CoachProgram.Models.Services.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,33 @@ public class TrainingController {
         }
 
         return "redirect:/clients/detail/{clientId}";
+    }
+
+    @GetMapping("/detail/{trainingId}/{clientId}")
+    public String renderDetailTrainingForm(@AuthenticationPrincipal UserEntity userEntity,
+                                           @PathVariable long trainingId,
+                                           @PathVariable long clientId,
+                                           Model model) {
+
+        TrainingEntity trainingEntity = trainingRepository.findById(trainingId).orElseThrow();
+        ClientEntity clientEntity = clientService.getByIdOrThrow(clientId);
+
+        if (trainingEntity.getClient().getClientId() != clientEntity.getClientId()
+                || clientEntity.getOwner().getUserId() != userEntity.getUserId()) {
+            throw new AccessDeniedException("You have not right to do this action.");
+        }
+
+        TrainingDTO trainingDTO = trainingService.toDto(trainingEntity);
+
+        model.addAttribute("trainingDTO", trainingDTO);
+        return "pages/training/detail";
+    }
+
+    @PostMapping("/detail/{trainingId}")
+    public String saveUpdateTraining(@PathVariable long trainingId,@ModelAttribute TrainingDTO trainingDTO){
+        trainingService.updateTraining(trainingId,trainingDTO); // TODO Take client Detail from trainingId and redirect after edit
+
+
+        return "redirect:/clients";
     }
 }
