@@ -10,6 +10,7 @@ import com.palci.CoachProgram.Models.Services.ClientService;
 import com.palci.CoachProgram.Models.Services.TrainingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -108,6 +109,27 @@ public class ClientController {
 
         return "redirect:/clients";
 
+    }
+
+    @GetMapping("/full-edit/{clientId}")
+    public String renderFullEditForm(@PathVariable long clientId,@AuthenticationPrincipal UserEntity userEntity, Model model){
+        ClientDTO clientDTO = clientService.getClientById(clientId);
+
+        if (clientDTO.getOwnerId() != userEntity.getUserId()){
+            throw new AccessDeniedException("You are not allowed to edit this client");
+        }
+
+        model.addAttribute("clientDTO",clientDTO);
+        return "pages/clients/fullEdit";
+
+    }
+
+    // Editing client
+    @PostMapping("/full-edit/{clientId}")
+    public String updateClient(@PathVariable long clientId,@ModelAttribute("clientDTO")ClientDTO clientDTO){
+        clientService.update(clientDTO,clientId);
+
+        return "redirect:/clients/detail/{clientId}";
     }
 
 
