@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -74,6 +75,10 @@ public class TrainingController {
         if (trainingEntity.getClient().getClientId() != clientEntity.getClientId() || clientEntity.getOwner().getUserId() != userEntity.getUserId()){
             throw new AccessDeniedException("You have not right to do this action.");
         }else {
+            if (trainingEntity.getDate().isAfter(LocalDate.now())){
+                trainingEntity.setDate(LocalDate.now());
+            }
+
             trainingEntity.setDone(true);
             trainingRepository.save(trainingEntity);
             plan.updateProgress();
@@ -92,6 +97,10 @@ public class TrainingController {
         if (trainingEntity.getClient().getClientId() != clientEntity.getClientId() || clientEntity.getOwner().getUserId() != userEntity.getUserId()){
             throw new AccessDeniedException("You have not right to do this action.");
         }else {
+            if (trainingEntity.getDate().isAfter(LocalDate.now())){
+                trainingEntity.setDate(LocalDate.now());
+            }
+
             trainingEntity.setDone(true);
             trainingRepository.save(trainingEntity);
             plan.updateProgress();
