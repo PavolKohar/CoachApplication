@@ -1,11 +1,9 @@
 package com.palci.CoachProgram.Controllers;
 
 
-import com.palci.CoachProgram.Data.Entities.ClientEntity;
-import com.palci.CoachProgram.Data.Entities.TrainingEntity;
-import com.palci.CoachProgram.Data.Entities.UserEntity;
-import com.palci.CoachProgram.Data.Entities.WeightEntity;
+import com.palci.CoachProgram.Data.Entities.*;
 import com.palci.CoachProgram.Data.Repositories.ClientRepository;
+import com.palci.CoachProgram.Data.Repositories.TrainingPlanRepository;
 import com.palci.CoachProgram.Data.Repositories.TrainingRepository;
 import com.palci.CoachProgram.Data.Repositories.WeightRepository;
 import com.palci.CoachProgram.Models.DTO.ClientDTO;
@@ -33,6 +31,8 @@ public class ClientDetailController {
     WeightRepository weightRepository;
     @Autowired
     TrainingRepository trainingRepository;
+    @Autowired
+    TrainingPlanRepository planRepository;
 
 
     @GetMapping("/{clientId}")
@@ -61,7 +61,7 @@ public class ClientDetailController {
         List<TrainingEntity> nextFiveTrainings = trainingRepository.findTop5ByClientAndDoneFalseOrderByDateAsc(entity);
         model.addAttribute("fiveNextTrainings",nextFiveTrainings);
 
-        // Generating values for chart.js
+        // Generating values for chart.js - Weight history
         List<String> dates = weightHistory.stream()
                 .map(entry->entry.getDate().toString())
                 .toList();
@@ -71,6 +71,11 @@ public class ClientDetailController {
 
         model.addAttribute("data",weights);
         model.addAttribute("labels",dates);
+        // End of region for char.jj
+
+        // Region for training plan for clients
+        List<TrainingPlanEntity> planEntities = planRepository.findAllByClientOrderByStartDateAsc(entity);
+        model.addAttribute("plans",planEntities);
 
 
         return "pages/clients/detail";
