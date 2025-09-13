@@ -22,6 +22,12 @@ public class TrainingPlanEntity {
     @Column(nullable = false)
     private int totalWorkouts;
 
+    @Column(nullable = false)
+    private int doneWorkouts;
+
+    @Column(nullable = false)
+    private boolean done;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "owner_id")
     private UserEntity user;
@@ -32,6 +38,15 @@ public class TrainingPlanEntity {
 
     @OneToMany(mappedBy = "plan",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TrainingEntity> trainings;
+
+    public void updateProgress(){
+        if (trainings!= null){
+            this.doneWorkouts  = (int) trainings.stream().filter(TrainingEntity::isDone).count();
+            this.done = (doneWorkouts == totalWorkouts);
+        }
+    }
+
+
 
     // Getters and setters
 
@@ -91,5 +106,21 @@ public class TrainingPlanEntity {
 
     public void setTotalWorkouts(int totalWorkouts) {
         this.totalWorkouts = totalWorkouts;
+    }
+
+    public int getDoneWorkouts() {
+        return doneWorkouts;
+    }
+
+    public void setDoneWorkouts(int doneWorkouts) {
+        this.doneWorkouts = doneWorkouts;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 }

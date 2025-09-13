@@ -104,6 +104,8 @@ public class TrainingServiceImpl implements TrainingService{
         planEntity.setStartDate(startDate);
         planEntity.setEndDate(endDate);
         planEntity.setTotalWorkouts(totalWorkouts);
+        planEntity.setDone(false);
+        planEntity.setDoneWorkouts(0);
         trainingPlanRepository.save(planEntity);
         trainingRepository.saveAll(trainings);
 
@@ -136,13 +138,16 @@ public class TrainingServiceImpl implements TrainingService{
     @Override
     public void updateTraining(long trainingId, TrainingDTO trainingDTO) {
         TrainingEntity trainingEntity = trainingRepository.findById(trainingId).orElseThrow();
+        TrainingPlanEntity plan = trainingEntity.getPlan();
 
         trainingEntity.setTime(trainingDTO.getTime());
         trainingEntity.setDone(trainingDTO.isDone());
         trainingEntity.setWorkout(trainingDTO.getWorkout());
         trainingEntity.setDate(trainingDTO.getDate());
+        plan.updateProgress();
 
         trainingRepository.save(trainingEntity);
+        trainingPlanRepository.save(plan);
 
     }
 

@@ -217,14 +217,16 @@
             <th>Start Date</th>
             <th>End date</th>
             <th>Total workouts</th>
+            <th>Done workouts</th>
             <th>Remove</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="plan : ${plans}">
+        <tr th:each="plan : ${plans}" class="table-row" th:classappend="${plan.done} ? 'table-success' : 'table-white'">
             <td th:text="${plan.startDate}"></td>
             <td th:text="${plan.endDate}"></td>
             <td th:text="${plan.totalWorkouts}"></td>
+            <td th:text="${plan.doneWorkouts}"></td>
             <!-- deleting entities -->
             <td>
                 <a th:href="@{'/clients/detail/remove-plan/'+${clientDTO.clientId}+ '/' + ${plan.trainingPlanId}}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this training Plan ?')">🗑️</a>

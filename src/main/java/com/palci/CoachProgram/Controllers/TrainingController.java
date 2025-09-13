@@ -1,10 +1,8 @@
 package com.palci.CoachProgram.Controllers;
 
-import com.palci.CoachProgram.Data.Entities.ClientEntity;
-import com.palci.CoachProgram.Data.Entities.TrainingEntity;
-import com.palci.CoachProgram.Data.Entities.UserEntity;
-import com.palci.CoachProgram.Data.Entities.WeightEntity;
+import com.palci.CoachProgram.Data.Entities.*;
 import com.palci.CoachProgram.Data.Repositories.ClientRepository;
+import com.palci.CoachProgram.Data.Repositories.TrainingPlanRepository;
 import com.palci.CoachProgram.Data.Repositories.TrainingRepository;
 import com.palci.CoachProgram.Data.Repositories.WeightRepository;
 import com.palci.CoachProgram.Models.DTO.PlanDTO;
@@ -35,6 +33,8 @@ public class TrainingController {
     TrainingRepository trainingRepository;
     @Autowired
     WeightRepository weightRepository;
+    @Autowired
+    TrainingPlanRepository planRepository;
 
 
     @GetMapping
@@ -69,12 +69,15 @@ public class TrainingController {
     public String trainingDone(@AuthenticationPrincipal UserEntity userEntity, @PathVariable long trainingId,@PathVariable long clientId){
         TrainingEntity trainingEntity = trainingRepository.findById(trainingId).orElseThrow();
         ClientEntity clientEntity = clientService.getByIdOrThrow(clientId);
+        TrainingPlanEntity plan = trainingEntity.getPlan();
 
         if (trainingEntity.getClient().getClientId() != clientEntity.getClientId() || clientEntity.getOwner().getUserId() != userEntity.getUserId()){
             throw new AccessDeniedException("You have not right to do this action.");
         }else {
             trainingEntity.setDone(true);
             trainingRepository.save(trainingEntity);
+            plan.updateProgress();
+            planRepository.save(plan);
         }
 
         return "redirect:/clients/detail/{clientId}";
