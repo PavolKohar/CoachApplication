@@ -227,7 +227,7 @@
             <td th:text="${plan.totalWorkouts}"></td>
             <!-- deleting entities -->
             <td>
-                <a th:href="@{'/clients/remove-plan/'+${clientDTO.clientId}+ '/' + ${plan.trainingPlanId}}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this training Plan ?')">🗑️</a>
+                <a th:href="@{'/clients/detail/remove-plan/'+${clientDTO.clientId}+ '/' + ${plan.trainingPlanId}}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this training Plan ?')">🗑️</a>
             </td>
         </tr>
         </tbody>

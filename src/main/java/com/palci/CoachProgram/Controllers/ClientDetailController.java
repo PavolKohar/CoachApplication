@@ -130,4 +130,21 @@ public class ClientDetailController {
         return "redirect:/clients/detail/{clientId}";
     }
 
+    @GetMapping("/remove-plan/{clientId}/{planId}")
+    public String removeTrainingPlan(@PathVariable long planId,@PathVariable long clientId,@AuthenticationPrincipal UserEntity userEntity){
+
+        TrainingPlanEntity planEntity = planRepository.findById(planId).orElseThrow();
+        ClientEntity clientEntity = clientRepository.findById(clientId).orElseThrow();
+
+        // Basic authorization
+        if (planEntity.getClient().getClientId() == clientId && clientEntity.getOwner().getUserId() == userEntity.getUserId()){
+            planRepository.deleteById(planId);
+        }else {
+            throw new AccessDeniedException("You are not allowed to delete this record.");
+
+        }
+
+        return "redirect:/clients/detail/{clientId}";
+    }
+
 }
