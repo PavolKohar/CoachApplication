@@ -5,7 +5,9 @@ import com.palci.CoachProgram.Data.Entities.UserEntity;
 import com.palci.CoachProgram.Data.Repositories.ClientRepository;
 import com.palci.CoachProgram.Data.Repositories.TrainingRepository;
 import com.palci.CoachProgram.Models.DTO.ClientDTO;
+import com.palci.CoachProgram.Models.DTO.StatisticDTO;
 import com.palci.CoachProgram.Models.Services.ClientService;
+import com.palci.CoachProgram.Models.Services.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,24 +27,21 @@ public class StatisticController {
     TrainingRepository trainingRepository;
     @Autowired
     ClientRepository clientRepository;
+    @Autowired
+    StatisticService statisticService;
 
 
     @GetMapping("/{clientId}")
     public String renderStats(@PathVariable long clientId, @AuthenticationPrincipal UserEntity userEntity, Model model) {
+
+       //TODO finish authorization
         ClientEntity clientEntity = clientRepository.findById(clientId).orElseThrow();
         ClientDTO clientDTO = clientService.getClientById(clientId);
 
-        int allTrainings = trainingRepository.findAllByClientOrderByDateAsc(clientEntity).size();
-        int doneTrainings = trainingRepository.findAllByClientAndDoneTrueOrderByDateAsc(clientEntity).size();
+        StatisticDTO statisticDTO = statisticService.getStatistic(clientEntity);
 
-
-
-
-
-
+        model.addAttribute("statistic",statisticDTO);
         model.addAttribute("client",clientDTO);
-
-
 
         return "pages/statistic/statistic";
     }

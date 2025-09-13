@@ -1,6 +1,7 @@
 package com.palci.CoachProgram.Models.Services;
 
 import com.palci.CoachProgram.Data.Entities.ClientEntity;
+import com.palci.CoachProgram.Models.DTO.StatisticDTO;
 
 public interface StatisticService {
 
@@ -21,6 +22,10 @@ public interface StatisticService {
     double getMaxWeight(ClientEntity client);
 
     double getMaxWeightDifference(ClientEntity client);
+
+    double getAverageWeight(ClientEntity client);
+
+    StatisticDTO getStatistic(ClientEntity client);
 
 
 }

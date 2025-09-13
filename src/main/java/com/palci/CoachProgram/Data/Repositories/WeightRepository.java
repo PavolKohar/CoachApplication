@@ -12,5 +12,6 @@ public interface WeightRepository extends JpaRepository<WeightEntity,Long> {
     List<WeightEntity> findTop5ByClientOrderByDateDesc(ClientEntity client);
     Optional<WeightEntity> findTopByClientOrderByOldWeightDesc(ClientEntity client);
     Optional<WeightEntity> findTopByClientOrderByNewWeightAsc(ClientEntity client);
+    List<WeightEntity> findAllByClient(ClientEntity client);
 
 }
