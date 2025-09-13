@@ -5,6 +5,7 @@ import com.palci.CoachProgram.Data.Entities.TrainingEntity;
 import com.palci.CoachProgram.Data.Entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TrainingRepository extends JpaRepository<TrainingEntity,Long> {
@@ -14,4 +15,5 @@ public interface TrainingRepository extends JpaRepository<TrainingEntity,Long> {
     List<TrainingEntity> findAllByClientAndDoneTrueOrderByDateAsc(ClientEntity client);
     List<TrainingEntity> findTop5ByClientOrderByDateAsc(ClientEntity client);
     List<TrainingEntity> findTop5ByClientAndDoneFalseOrderByDateAsc(ClientEntity client);
+    int countByClientAndDateLessThanEqual(ClientEntity client, LocalDate date);
 }

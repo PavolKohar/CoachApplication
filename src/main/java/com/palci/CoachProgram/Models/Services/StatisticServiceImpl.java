@@ -10,6 +10,7 @@ import com.palci.CoachProgram.Models.DTO.StatisticDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -26,7 +27,7 @@ public class StatisticServiceImpl implements StatisticService{
 
     @Override
     public int getAllTrainings(ClientEntity client) {
-        return trainingRepository.findAllByClientOrderByDateAsc(client).size();
+        return trainingRepository.countByClientAndDateLessThanEqual(client,LocalDate.now());
     }
 
     @Override
