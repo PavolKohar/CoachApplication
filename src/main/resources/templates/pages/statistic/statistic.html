@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+
+</head>
+<body class="bg-light" >
+<header th:replace="~{fragments/layout.html ::header}"></header>
+
+
+
+<h1>Statistic page</h1>
+<h1 th:text="${client.firstName}" ></h1>
+
+
+
+
+
+
+<script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

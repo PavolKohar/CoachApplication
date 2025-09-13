@@ -32,6 +32,11 @@
                        th:text="${clientDTO.active} ? 'Deactivate' : 'Activate'">
                     </a>
                 </li>
+                <li>
+                    <a th:href="@{'/clients/statistic/' + ${clientDTO.clientId}}" class="dropdown-item">
+                        Statistics
+                    </a>
+                </li>
 
                 <!-- Editácia klienta -->
                 <li>

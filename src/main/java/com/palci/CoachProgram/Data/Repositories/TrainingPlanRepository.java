@@ -11,4 +11,5 @@ import java.util.List;
 public interface TrainingPlanRepository extends JpaRepository<TrainingPlanEntity, Long> {
     List<TrainingPlanEntity> findAllByClientOrderByStartDateAsc(ClientEntity client);
     List<TrainingPlanEntity> findAllByUserOrderByStartDateAsc(UserEntity user);
+    List<TrainingPlanEntity> findAllByClientAndDoneTrue(ClientEntity client);
 }

@@ -10,6 +10,7 @@ import java.util.List;
 public interface TrainingRepository extends JpaRepository<TrainingEntity,Long> {
     List<TrainingEntity> findAllByClientOrderByDateAsc(ClientEntity client);
     List<TrainingEntity> findAllByUserOrderByDateAsc(UserEntity user);
+    List<TrainingEntity> findAllByClientAndDoneTrueOrderByDateAsc(ClientEntity client);
     List<TrainingEntity> findTop5ByClientOrderByDateAsc(ClientEntity client);
     List<TrainingEntity> findTop5ByClientAndDoneFalseOrderByDateAsc(ClientEntity client);
 }
