@@ -31,7 +31,7 @@ public class StatisticServiceImpl implements StatisticService{
 
     @Override
     public int getDoneTrainingPlans(ClientEntity client) {
-        return trainingRepository.findAllByClientAndDoneTrueOrderByDateAsc(client).size();
+        return trainingPlanRepository.findAllByClientAndDoneTrue(client).size();
     }
 
     @Override
@@ -39,7 +39,9 @@ public class StatisticServiceImpl implements StatisticService{
         int allTrainings = getAllTrainings(client);
         int doneTrainings = getDoneTrainings(client);
 
-        return (double) (doneTrainings / allTrainings) * 100;
+        if (allTrainings == 0) return 0.0;
+
+        return  ((double)doneTrainings / allTrainings) * 100;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class StatisticServiceImpl implements StatisticService{
 
     @Override
     public int getDoneTrainings(ClientEntity client) {
-        return  trainingPlanRepository.findAllByClientAndDoneTrue(client).size();
+        return  trainingRepository.findAllByClientAndDoneTrueOrderByDateAsc(client).size();
     }
 
     @Override
@@ -57,7 +59,9 @@ public class StatisticServiceImpl implements StatisticService{
         int allPlans = getAllTrainingPlans(client);
         int donePlans = getDoneTrainingPlans(client);
 
-        return (double) (donePlans / allPlans) * 100;
+        if (allPlans == 0) return 0.0;
+
+        return ((double) donePlans / allPlans) * 100;
     }
 
     @Override
@@ -95,13 +99,19 @@ public class StatisticServiceImpl implements StatisticService{
         int allTrainings = getAllTrainings(client);
         int doneTrainings = getDoneTrainings(client);
         double successRateTrainings = getPercentOfTrainings(client);
+        successRateTrainings = (double) Math.round(successRateTrainings * 100) / 100;
         int allTrainingsPlans = getAllTrainingPlans(client);
         int doneTrainingsPlans = getDoneTrainingPlans(client);
         double trainingPlansSuccess = getPercentOfTrainingPlans(client);
+        trainingPlansSuccess = (double) Math.round(trainingPlansSuccess * 100) / 100;
         double maxWeight = getMaxWeight(client);
         double minWeight = getMinWeight(client);
         double maxWeightDiff = getMaxWeightDifference(client);
+        maxWeightDiff = (double) Math.round(maxWeightDiff*100)/100;
         double averageWeight = getAverageWeight(client);
+        averageWeight = (double) Math.round(averageWeight * 100) /100;
+
+
 
         return new StatisticDTO(allTrainings,doneTrainings,successRateTrainings,allTrainingsPlans,doneTrainingsPlans,trainingPlansSuccess,maxWeight,minWeight,maxWeightDiff,averageWeight);
     }
