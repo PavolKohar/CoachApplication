@@ -5,8 +5,10 @@
 </head>
 <body class="bg-light" >
 <header th:replace="~{fragments/layout.html ::header}"></header>
+<a th:href="@{'/clients/detail/' + ${client.clientId}}" class="btn btn-primary mt-1">Back to client profile</a>
 
 <div class="container mt-3">
+    <a th:href="@{'/clients/detail/' + ${client.clientId}}" class="btn btn-primary">Back to client profile</a>
     <h1 class="text-center" th:text="${client.firstName} + ' ' + ${client.lastName} + ' stats '" ></h1>
     <hr>
     <div class="">

@@ -8,6 +8,7 @@
 
 
 <div class="container">
+  <a th:href="@{'/clients/detail/' + ${clientDTO.clientId}}" class="btn btn-primary mt-1">Back to client profile</a>
   <form
           method="post"
           th:action="@{'/clients/full-edit/' + ${clientDTO.clientId}}"
