@@ -2,8 +2,10 @@ package com.palci.CoachProgram.Controllers;
 
 import com.palci.CoachProgram.Data.Entities.ClientEntity;
 import com.palci.CoachProgram.Data.Entities.UserEntity;
+import com.palci.CoachProgram.Data.Entities.WeightEntity;
 import com.palci.CoachProgram.Data.Repositories.ClientRepository;
 import com.palci.CoachProgram.Data.Repositories.TrainingRepository;
+import com.palci.CoachProgram.Data.Repositories.WeightRepository;
 import com.palci.CoachProgram.Models.DTO.ClientDTO;
 import com.palci.CoachProgram.Models.DTO.StatisticDTO;
 import com.palci.CoachProgram.Models.Services.ClientService;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @Secured({"ROLE_ADMIN", "ROLE_USER"})
 @RequestMapping("/clients/statistic")
@@ -29,6 +33,8 @@ public class StatisticController {
     ClientRepository clientRepository;
     @Autowired
     StatisticService statisticService;
+    @Autowired
+    WeightRepository weightRepository;
 
 
     @GetMapping("/{clientId}")
@@ -37,11 +43,24 @@ public class StatisticController {
        //TODO finish authorization
         ClientEntity clientEntity = clientRepository.findById(clientId).orElseThrow();
         ClientDTO clientDTO = clientService.getClientById(clientId);
+        List<WeightEntity> weightHistory = weightRepository.findAllByClientOrderByDateAsc(clientEntity);
 
         StatisticDTO statisticDTO = statisticService.getStatistic(clientEntity);
 
         model.addAttribute("statistic",statisticDTO);
         model.addAttribute("client",clientDTO);
+
+        // Chart.js - weights
+        List<String> dates = weightHistory.stream()
+                .map(entry->entry.getDate().toString())
+                .toList();
+        List<Double> weights = weightHistory.stream()
+                .map(WeightEntity::getNewWeight)
+                .toList();
+
+        model.addAttribute("data",weights);
+        model.addAttribute("labels",dates);
+        // End of region for char.jj
 
         return "pages/statistic/statistic";
     }

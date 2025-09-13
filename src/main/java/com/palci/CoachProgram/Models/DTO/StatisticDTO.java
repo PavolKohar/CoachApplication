@@ -10,7 +10,7 @@ public class StatisticDTO {
     private double percentSuccessTraining;
     private int allPlans;
     private int donePlans;
-    private double percentSuccessTrainingPlans;
+    private double percentSuccessTrainingPlans; // TODO - check for all Plans (bad values)
     private double maxWeight;
     private double minWeight;
     private double maxDiffWeight;

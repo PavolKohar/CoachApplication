@@ -6,10 +6,94 @@
 <body class="bg-light" >
 <header th:replace="~{fragments/layout.html ::header}"></header>
 
+<div class="container mt-3">
+    <h1 class="text-center" th:text="${client.firstName} + ' ' + ${client.lastName} + ' stats '" ></h1>
+    <hr>
+    <div class="">
 
 
-<h1>Statistic page</h1>
-<h1 th:text="${client.firstName}" ></h1>
+        <h2>Training statistic</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">All trainings</th>
+                <th scope="col">Done Trainings</th>
+                <th scope="col">Training success rate</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${statistic.allTrainings}" ></td>
+                <td th:text="${statistic.doneTrainings}" ></td>
+                <td th:text="${statistic.percentSuccessTraining} + ' %'" ></td>
+            </tr>
+            </tbody>
+        </table>
+        <h2>Here will be chart </h2>
+    </div>
+
+    <hr>
+    <h2>Weight statistic</h2>
+    <div class="">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Max weight</th>
+                <th scope="col">Min weight</th>
+                <th scope="col">Max weight difference</th>
+                <th scope="col">Average weight</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${statistic.maxWeight}" ></td>
+                <td th:text="${statistic.minWeight}" ></td>
+                <td th:text="${statistic.maxDiffWeight}" ></td>
+                <td th:text="${statistic.averageWeight}" ></td>
+
+            </tr>
+            </tbody>
+        </table>
+
+        <canvas id="weightChart"></canvas>
+
+    </div>
+
+    <hr>
+    <h2>Training plans statistic</h2>
+    <div class="">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">All plans</th>
+                <th scope="col">Done plans</th>
+                <th scope="col">Plans success rate</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${statistic.allPlans}" ></td>
+                <td th:text="${statistic.donePlans}" ></td>
+                <td th:text="${statistic.percentSuccessTrainingPlans} + ' %'" ></td>
+
+
+            </tr>
+            </tbody>
+        </table>
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+
 
 
 
@@ -17,5 +101,32 @@
 
 
 <script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:inline="javascript">
+    let labels = [[${labels}]];
+    let data = [[${data}]];
+
+    const ctx = document.getElementById('weightChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Weight Progress (kg)',
+                data: data,
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+</script>
 </body>
 </html>
