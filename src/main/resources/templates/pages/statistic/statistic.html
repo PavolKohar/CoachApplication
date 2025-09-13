@@ -5,7 +5,6 @@
 </head>
 <body class="bg-light" >
 <header th:replace="~{fragments/layout.html ::header}"></header>
-<a th:href="@{'/clients/detail/' + ${client.clientId}}" class="btn btn-primary mt-1">Back to client profile</a>
 
 <div class="container mt-3">
     <a th:href="@{'/clients/detail/' + ${client.clientId}}" class="btn btn-primary">Back to client profile</a>
@@ -29,7 +28,7 @@
             </tr>
             </tbody>
         </table>
-        <h2>Here will be chart </h2>
+       <canvas id="trainingChart"></canvas>
     </div>
 
     <hr>
@@ -103,26 +102,55 @@
 <script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">
-    let labels = [[${labels}]];
-    let data = [[${data}]];
+    // Weight Chart
+    let weightLabels = [[${labels}]];
+    let weightData = [[${data}]];
 
-    const ctx = document.getElementById('weightChart').getContext('2d');
-    const myChart = new Chart(ctx, {
+    new Chart(document.getElementById("weightChart"), {
         type: 'line',
         data: {
-            labels: labels,
+            labels: weightLabels,
             datasets: [{
                 label: 'Weight Progress (kg)',
-                data: data,
+                data: weightData,
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1
             }]
         },
         options: {
+            responsive: true,
             scales: {
                 y: {
                     beginAtZero: false
+                }
+            }
+        }
+    });
+
+    // Training Chart
+    let chartData = [[${doneTrainingsByWeek}]];
+    let weekLabels = Object.keys(chartData);
+    let weekData = Object.values(chartData);
+
+    new Chart(document.getElementById("trainingChart"), {
+        type: 'bar',
+        data: {
+            labels: weekLabels,
+            datasets: [{
+                label: 'Done trainings by week',
+                data: weekData,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgb(54, 162, 235)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.palci.CoachProgram.Controllers;
 
 import com.palci.CoachProgram.Data.Entities.ClientEntity;
+import com.palci.CoachProgram.Data.Entities.TrainingEntity;
 import com.palci.CoachProgram.Data.Entities.UserEntity;
 import com.palci.CoachProgram.Data.Entities.WeightEntity;
 import com.palci.CoachProgram.Data.Repositories.ClientRepository;
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.temporal.IsoFields;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @Secured({"ROLE_ADMIN", "ROLE_USER"})
@@ -60,7 +64,20 @@ public class StatisticController {
 
         model.addAttribute("data",weights);
         model.addAttribute("labels",dates);
-        // End of region for char.jj
+        // End of region for char.js
+
+        // Chart.js - trainings in one week
+        List<TrainingEntity> doneTrainings = trainingRepository.findAllByClientAndDoneTrue(clientEntity);
+        Map<String,Long> doneTrainingsByWeek = doneTrainings.stream()
+                .collect(Collectors.groupingBy(
+                        training -> {
+                            int week = training.getDate().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+                            int year = training.getDate().getYear();
+                            return year + "-W" + week;
+                        },
+                        Collectors.counting()
+                ));
+        model.addAttribute("doneTrainingsByWeek",doneTrainingsByWeek);
 
         return "pages/statistic/statistic";
     }
