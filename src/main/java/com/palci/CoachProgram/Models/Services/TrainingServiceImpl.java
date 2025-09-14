@@ -11,9 +11,11 @@ import com.palci.CoachProgram.Models.DTO.TrainingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.IsoFields;
 import java.util.*;
 
 @Service
@@ -194,5 +196,52 @@ public class TrainingServiceImpl implements TrainingService{
 
 
         trainingRepository.save(training);
+    }
+
+    @Override
+    public List<TrainingEntity> getThisWeekTrainings(UserEntity user) {
+        LocalDate today = LocalDate.now();
+        LocalDate startOfTheWeek = today.with(DayOfWeek.MONDAY);
+        LocalDate endOfTheWeek = today.with(DayOfWeek.SUNDAY);
+
+        return trainingRepository.findAllByUserOrderByDateAsc(user)
+                .stream()
+                .filter(t->{
+                    LocalDate date = t.getDate();
+                    return !t.isDone() && (date.isEqual(startOfTheWeek) || date.isAfter(startOfTheWeek)) && (date.isBefore(endOfTheWeek) || date.isEqual(endOfTheWeek));
+
+                }).toList();
+    }
+
+    @Override
+    public List<TrainingEntity> getNextWeekTrainings(UserEntity user) {
+        LocalDate today = LocalDate.now();
+        LocalDate startOfNextWeek = today.with(DayOfWeek.MONDAY).plusWeeks(1);
+        LocalDate endOfNextWeek = today.with(DayOfWeek.SUNDAY).plusWeeks(1);
+
+        return trainingRepository.findAllByUserOrderByDateAsc(user)
+                .stream()
+                .filter(t -> {
+                    LocalDate date = t.getDate();
+                    return !t.isDone() && (date.isEqual(startOfNextWeek) || date.isAfter(startOfNextWeek)) && (date.isBefore(endOfNextWeek) || date.isEqual(endOfNextWeek));
+                })
+                .toList();
+    }
+
+    @Override
+    public List<TrainingEntity> getThisMonthTrainings(UserEntity user) {
+        LocalDate today = LocalDate.now();
+        int currentMonth = today.getMonthValue();
+        int currentYear = today.getYear();
+
+        return trainingRepository.findAllByUserOrderByDateAsc(user)
+                .stream()
+                .filter(t -> {
+                    LocalDate date = t.getDate();
+                    return date.getMonthValue() == currentMonth &&
+                            date.getYear() == currentYear &&
+                            !t.isDone();
+                })
+                .toList();
     }
 }

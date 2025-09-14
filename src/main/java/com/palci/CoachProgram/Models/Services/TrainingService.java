@@ -22,4 +22,10 @@ public interface TrainingService {
     TrainingDTO toDto(TrainingEntity entity);
 
     void createTraining(long clientId,TrainingDTO trainingDTO);
+
+    List<TrainingEntity> getThisWeekTrainings(UserEntity user);
+
+    List<TrainingEntity> getNextWeekTrainings(UserEntity user);
+
+    List<TrainingEntity> getThisMonthTrainings(UserEntity user);
 }

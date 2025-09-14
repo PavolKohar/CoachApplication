@@ -1,37 +1,172 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout.html :: head}">
-
 </head>
-<body class="bg-light" >
+<body class="bg-light">
+
 <header th:replace="~{fragments/layout.html ::header}"></header>
 
+<div class="container text-center mt-3">
+  <h1 th:text="${name} + '-calendar'">Client Name - calendar</h1>
+  <p class="text-muted">calendar view in progress</p>
+</div>
+
+<div class="container-fluid mt-4">
+  <hr>
+  <div class="row">
+
+    <!-- ✅ First Card: Today -->
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs" id="todayTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="today-tab" data-bs-toggle="tab" href="#today" role="tab" aria-controls="today" aria-selected="true">Today</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-body">
+          <div class="tab-content" id="todayTabContent">
+            <div class="tab-pane fade show active" id="today" role="tabpanel" aria-labelledby="today-tab">
+              <div style="height: 200px; overflow-y: auto;">
+                <p th:if="${#lists.isEmpty(today)}">No trainings for today</p>
+                <ul class="list-group">
+                  <li th:each="training : ${today}" class="list-group-item d-flex justify-content-between">
+                    <div>
+                      <span th:text="${training.client.firstName + ' ' + training.client.lastName}">John Doe</span> -
+                      <span th:text="${training.time}">12:00</span>
+                    </div>
+                    <div>
+                      <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-primary">🕐</a>
+                      <a th:href="@{'/training/client/done/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-success">✔️</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ Second Card: This Week / Next Week -->
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs" id="weekTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="thisweek-tab" data-bs-toggle="tab" href="#thisweek" role="tab" aria-controls="thisweek" aria-selected="true">This week</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="nextweek-tab" data-bs-toggle="tab" href="#nextweek" role="tab" aria-controls="nextweek" aria-selected="false">Next week</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-body">
+          <div class="tab-content" id="weekTabContent">
+
+            <!-- This Week Tab -->
+            <div class="tab-pane fade show active" id="thisweek" role="tabpanel" aria-labelledby="thisweek-tab">
+              <div style="height: 200px; overflow-y: auto;">
+                <p th:if="${#lists.isEmpty(thisWeek)}">No training for this week</p>
+                <ul class="list-group">
+                  <li th:each="training : ${thisWeek}" class="list-group-item d-flex justify-content-between">
+                    <div>
+                      <span th:text="${training.client.firstName + ' ' + training.client.lastName}">John Doe</span> -
+                      <span th:text="${training.date} + ' ' + ${training.time}">12.09.2025 10:00</span>
+                    </div>
+                    <div>
+                      <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-primary">🕐</a>
+                      <a th:href="@{'/training/client/done/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-success">✔️</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Next Week Tab -->
+            <div class="tab-pane fade" id="nextweek" role="tabpanel" aria-labelledby="nextweek-tab">
+              <div style="max-height: 200px; overflow-y: auto;">
+                <p th:if="${#lists.isEmpty(nextWeek)}">No trainings for next week</p>
+                <ul class="list-group">
+                  <li th:each="training : ${nextWeek}" class="list-group-item d-flex justify-content-between">
+                    <div>
+                      <span th:text="${training.client.firstName + ' ' + training.client.lastName}">John Doe</span> -
+                      <span th:text="${training.date} + ' ' + ${training.time}">19.09.2025 14:00</span>
+                    </div>
+                    <div>
+                      <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-primary">🕐</a>
+                      <a th:href="@{'/training/client/done/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-success">✔️</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div> <!-- end of tab-content -->
+        </div> <!-- end of card-body -->
+      </div> <!-- end of card -->
+    </div> <!-- end of col-6 -->
+  </div> <!-- end of row -->
+  <hr>
+  <h3 class="text-center" >This month</h3>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Client</th>
+      <th>Date</th>
+      <th>Workout</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="training : ${thisMonth}">
+      <td th:text="${training.client.firstName + ' ' + training.client.lastName}"></td>
+      <td th:text="${training.date + ' - ' + training.time}"></td>
+      <td th:text="${training.workout}"></td>
+      <td>
+        <a th:href="@{'/training/done/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-success">✔️</a>
+        <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-primary">🕐</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h3 class="text-center" >All Trainings</h3>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Client</th>
+      <th>Date</th>
+      <th>Workout</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="training : ${allTrainings}">
+      <td th:text="${training.client.firstName + ' ' + training.client.lastName}"></td>
+      <td th:text="${training.date + ' - ' + training.time}"></td>
+      <td th:text="${training.workout}"></td>
+      <td>
+        <a th:href="@{'/training/done/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-success">✔️</a>
+        <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-primary">🕐</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
 
-<h1>Work in progress</h1>
-
-
-<div id="calendar"></div>
 
 
 
 
 
+</div> <!-- end of container-fluid -->
 
 <script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
-<script th:inline="javascript">
-  document.addEventListener('DOMContentLoaded', function () {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth',
-      events: [
-        { title: 'Tréning s Jožkom', date: '2025-09-15' },
-        { title: 'Beh 5 km', date: '2025-09-18' }
-      ]
-    });
-    calendar.render();
-  });
-</script>
 </body>
 </html>
