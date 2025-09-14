@@ -37,7 +37,7 @@
 
                 <!-- Scrollable list -->
                 <div style="max-height: 100px; overflow-y: auto;">
-                    <p th:if="${#lists.isEmpty(todayTrainings)}">Žiadne tréningy na dnes.</p>
+                    <p th:if="${#lists.isEmpty(todayTrainings)}">No trainings for today</p>
                     <ul class="list-group">
                         <li th:each="training : ${todayTrainings}" class="list-group-item d-flex justify-content-between">
                             <div>
