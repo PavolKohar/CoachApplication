@@ -12,6 +12,7 @@ import com.palci.CoachProgram.Models.DTO.StatisticDTO;
 import com.palci.CoachProgram.Models.Services.ClientService;
 import com.palci.CoachProgram.Models.Services.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -44,11 +45,16 @@ public class StatisticController {
     @GetMapping("/{clientId}")
     public String renderStats(@PathVariable long clientId, @AuthenticationPrincipal UserEntity userEntity, Model model) {
 
-       //TODO finish authorization
+
         ClientEntity clientEntity = clientRepository.findById(clientId).orElseThrow();
+
+        if (clientEntity.getOwner().getUserId() != userEntity.getUserId()){
+            throw new AccessDeniedException("Not allowed");
+        }
+
+
         ClientDTO clientDTO = clientService.getClientById(clientId);
         List<WeightEntity> weightHistory = weightRepository.findAllByClientOrderByDateAsc(clientEntity);
-
         StatisticDTO statisticDTO = statisticService.getStatistic(clientEntity);
 
         model.addAttribute("statistic",statisticDTO);
