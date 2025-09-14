@@ -28,22 +28,40 @@ CoachApp is a web application built with **Spring Boot**, **Thymeleaf**, and **B
 - Chart.js
 
 ---
+## Build and run
+
+Before running the application, make sure you have the following installed:
+
+- Java 21
+- Maven
+- MariaDB or MySQL
+
+### 1. Clone the repository
+
+```bash
+
+git clone https://github.com/PavolKohar/CoachApplication.git
+cd CoachApplication
+```
 
 ### 2. Configure your database
 
 Update `src/main/resources/application.properties` with your local database configuration:
 
+example:
 ```
-spring.datasource.url=jdbc:mariadb://localhost:3306/CoachProgramDatabase
+spring.datasource.url=jdbc:mariadb://localhost:3306/CoachProgramDatabase?createDatabaseIfNotExist=true
 spring.datasource.username=root
 spring.datasource.password=your_password
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
 spring.jpa.hibernate.ddl-auto=update
+
 ```
 
-## 3. Run the application
+### 3. Run the application
 
 
-Open the project in your IDE and run `CoachApplication.java`
+Open the project in your IDE and run `CoachProgram.java`
 
 ---
 
