@@ -29,6 +29,18 @@ public class WeightEntity {
     @Column(nullable = false)
     private LocalDate date;
 
+
+    // Constructors (just for TestDataLoader)
+    public WeightEntity(ClientEntity client, double oldWeight, double newWeight, double difference, LocalDate date) {
+        this.client = client;
+        this.oldWeight = oldWeight;
+        this.newWeight = newWeight;
+        this.difference = difference;
+        this.date = date;
+    }
+
+    public WeightEntity(){};
+
     // Getters and setters
 
 

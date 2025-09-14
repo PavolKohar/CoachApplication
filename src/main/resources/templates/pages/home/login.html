@@ -8,8 +8,8 @@
 <header th:replace="~{fragments/layout.html :: header}"></header>
 
 <main class="flex-fill">
-    <div th:if="${param.error}" class="alert alert-danger">Nesprávny email alebo heslo.</div>
-    <div th:if="${param.logout}" class="alert alert-info">Bol si odhlásený.</div>
+    <div th:if="${param.error}" class="alert alert-danger">Incorrect email or password.</div>
+    <div th:if="${param.logout}" class="alert alert-info">You have been logged out.</div>
 
     <div class="container d-flex justify-content-center mt-5">
         <form th:action="@{/login}" method="post" class="p-4 border rounded shadow-sm" style="max-width: 400px; width: 100%;">
