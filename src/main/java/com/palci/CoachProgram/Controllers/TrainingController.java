@@ -132,10 +132,12 @@ public class TrainingController {
 
     @PostMapping("/detail/{trainingId}")
     public String saveUpdateTraining(@PathVariable long trainingId,@ModelAttribute TrainingDTO trainingDTO){
-        trainingService.updateTraining(trainingId,trainingDTO); // TODO Take client Detail from trainingId and redirect after edit
+        trainingService.updateTraining(trainingId,trainingDTO);
+        TrainingEntity training = trainingRepository.findById(trainingId).orElseThrow();
+        long clientId = training.getClient().getClientId();
 
 
-        return "redirect:/clients";
+        return "redirect:/clients/detail/" + clientId;
     }
 
     @GetMapping("/create-training/{clientId}")
@@ -154,7 +156,7 @@ public class TrainingController {
         trainingService.createTraining(clientId,trainingDTO);
         model.addAttribute("clientId",clientId);
 
-        return "redirect:/clients";
+        return "redirect:/clients/detail/" + clientId;
 
     }
 }
