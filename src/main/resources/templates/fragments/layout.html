@@ -11,7 +11,7 @@
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" th:href="@{/}"><h1>TrApp</h1></a>
+      <a class="navbar-brand" th:href="@{/}"><h1>Coach App</h1></a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
               data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
@@ -39,42 +39,8 @@
 
 
 
-<footer class="bg-dark text-light py-2 mt-5"  th:fragment="footer">
-  <div class="container">
-    <div class="row">
-
-      <!-- Column 1 -->
-      <div class="col-md-4 mb-0">
-        <h5>About Us</h5>
-        <p class="small">We build powerful apps to track your fitness, clients, and goals.</p>
-      </div>
-
-      <!-- Column 2 -->
-      <div class="col-md-4 mb-0">
-        <h5>Links</h5>
-        <ul class="list-unstyled">
-          <li><a href="/" class="text-light text-decoration-none">Home</a></li>
-          <li><a href="/contact" class="text-light text-decoration-none">Contact</a></li>
-          <li><a href="/about" class="text-light text-decoration-none">About</a></li>
-        </ul>
-      </div>
-
-      <!-- Column 3 -->
-      <div class="col-md-4 mb-1">
-        <h5>Follow Us</h5>
-        <a href="#" class="text-light me-2"><i class="bi bi-facebook"></i> Facebook</a><br>
-        <a href="#" class="text-light me-2"><i class="bi bi-twitter"></i> Twitter</a><br>
-        <a href="#" class="text-light"><i class="bi bi-instagram"></i> Instagram</a>
-      </div>
-
-    </div>
-
-    <hr class="bg-light my-1">
-
-    <div class="text-center">
-      <p class="mb-0">&copy; 2025 Palči App. All rights reserved.</p>
-    </div>
-  </div>
+<footer class="bg-dark text-white text-center py-2 mt-5" th:fragment="footer">
+  <small>&copy; 2025 CoachApp. All rights reserved.</small>
 </footer>
 
 <script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>

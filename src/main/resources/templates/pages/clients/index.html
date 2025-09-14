@@ -1,130 +1,109 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout.html :: head}">
+<head th:replace="~{fragments/layout.html :: head}"></head>
 
-</head>
-<body class="bg-light" >
-<header th:replace="~{fragments/layout.html ::header}"></header>
+<body class="bg-light d-flex flex-column min-vh-100">
+<header th:replace="~{fragments/layout.html :: header}"></header>
 
+<main class="flex-fill">
 
+    <div class="container mt-2">
 
- <div class="container mt-2">
-
-  <!-- User card START -->
-<div class="row">
-<!-- LEFT SIDE - User Info Card -->
-
-    <div class="col-md-4">
-        <div class="card h-100">
-            <div class="card-body">
-                <h5 class="card-title" th:text="${name}">Username</h5>
-                <h6 class="card-subtitle mb-3 text-muted">
-                    Clients count: <span th:text="${allClients}">0</span>
-                </h6>
-                <a th:href="@{/training}" class="btn btn-success w-100">Create Training Plan</a>
-            </div>
-        </div>
-    </div>
-
-<!-- RIGHT SIDE - Today's Trainings -->
-    <div class="col-md-8">
-        <div class="card h-100">
-            <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="card-title mb-0">Today’s Trainings</h5>
-                    <a th:href="@{/calendar}" class="btn btn-outline-primary btn-sm">Show Calendar</a>
+        <!-- User card START -->
+        <div class="row">
+            <!-- LEFT SIDE - User Info Card -->
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${name}">Username</h5>
+                        <h6 class="card-subtitle mb-3 text-muted">
+                            Clients count: <span th:text="${allClients}">0</span>
+                        </h6>
+                        <a th:href="@{/training}" class="btn btn-success w-100">Create Training Plan</a>
+                    </div>
                 </div>
+            </div>
 
-                <!-- Scrollable list -->
-                <div style="max-height: 100px; overflow-y: auto;">
-                    <p th:if="${#lists.isEmpty(todayTrainings)}">No trainings for today</p>
-                    <ul class="list-group">
-                        <li th:each="training : ${todayTrainings}" class="list-group-item d-flex justify-content-between">
-                            <div>
-                                <span th:text="${training.client.firstName + ' ' + training.client.lastName}">John Doe</span> -
-                                <span th:text="${training.time}"></span>
+            <!-- RIGHT SIDE - Today's Trainings -->
+            <div class="col-md-8">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">Today’s Trainings</h5>
+                            <a th:href="@{/calendar}" class="btn btn-outline-primary btn-sm">Show Calendar</a>
+                        </div>
 
-                            </div>
-                            <div>
-                                <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-primary">🕐</a>
-                                <a th:href="@{'/training/client/done/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-success">✔️</a>
-                            </div>
+                        <!-- Scrollable list -->
+                        <div style="max-height: 100px; overflow-y: auto;">
+                            <p th:if="${#lists.isEmpty(todayTrainings)}">No trainings for today</p>
+                            <ul class="list-group">
+                                <li th:each="training : ${todayTrainings}" class="list-group-item d-flex justify-content-between">
+                                    <div>
+                                        <span th:text="${training.client.firstName + ' ' + training.client.lastName}">John Doe</span> -
+                                        <span th:text="${training.time}"></span>
+                                    </div>
+                                    <div>
+                                        <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-primary">🕐</a>
+                                        <a th:href="@{'/training/client/done/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-success">✔️</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
 
-
-                        </li>
-
-                        <!-- Add more training items here -->
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- END ROW -->
+
     </div>
 
-</div>
-
- </div>
-
-
-
-<div class="container-fluid text-center">
-            <div class="btn-group my-3" role="group">
-                <a th:href="@{/clients/create}" class="btn btn-outline-primary">Add New Client</a>
-                <a th:href="@{/clients}" class="btn btn-primary">
-                    All Clients <span th:text="${allClients}" class="badge bg-light text-primary"></span>
-                </a>
-                <a th:href="@{/clients/male}" class="btn btn-primary">
-                    Male <span th:text="${male}" class="badge bg-light text-primary"></span>
-                </a>
-                <a th:href="@{/clients/female}" class="btn btn-primary">
-                    Female <span th:text="${female}" class="badge bg-light text-primary"></span>
-                </a>
-                <a th:href="@{/clients/weight-loss}" class="btn btn-primary">
-                    Weight Loss <span th:text="${weightLoss}" class="badge bg-light text-primary"></span>
-                </a>
-                <a th:href="@{/clients/muscle-gain}" class="btn btn-primary">
-                    Muscle Gain <span th:text="${muscleGain}" class="badge bg-light text-primary"></span>
-                </a>
-                <a th:href="@{/clients/maintain}" class="btn btn-primary">
-                    Maintain <span th:text="${maintain}" class="badge bg-light text-primary"></span>
-                </a>
-                <a th:href="@{/clients/active}" class="btn btn-outline-success">
-                    Active <span th:text="${active}" class="badge bg-light text-success"></span>
-                </a>
-                <a th:href="@{/clients/passive}" class="btn btn-outline-danger">
-                    Passive <span th:text="${passive}" class="badge bg-light text-danger"></span>
-                </a>
-            </div>
+    <!-- FILTER BUTTONS -->
+    <div class="container-fluid text-center">
+        <div class="btn-group my-3" role="group">
+            <a th:href="@{/clients/create}" class="btn btn-outline-primary">Add New Client</a>
+            <a th:href="@{/clients}" class="btn btn-primary">
+                All Clients <span th:text="${allClients}" class="badge bg-light text-primary"></span>
+            </a>
+            <a th:href="@{/clients/male}" class="btn btn-primary">
+                Male <span th:text="${male}" class="badge bg-light text-primary"></span>
+            </a>
+            <a th:href="@{/clients/female}" class="btn btn-primary">
+                Female <span th:text="${female}" class="badge bg-light text-primary"></span>
+            </a>
+            <a th:href="@{/clients/weight-loss}" class="btn btn-primary">
+                Weight Loss <span th:text="${weightLoss}" class="badge bg-light text-primary"></span>
+            </a>
+            <a th:href="@{/clients/muscle-gain}" class="btn btn-primary">
+                Muscle Gain <span th:text="${muscleGain}" class="badge bg-light text-primary"></span>
+            </a>
+            <a th:href="@{/clients/maintain}" class="btn btn-primary">
+                Maintain <span th:text="${maintain}" class="badge bg-light text-primary"></span>
+            </a>
+            <a th:href="@{/clients/active}" class="btn btn-outline-success">
+                Active <span th:text="${active}" class="badge bg-light text-success"></span>
+            </a>
+            <a th:href="@{/clients/passive}" class="btn btn-outline-danger">
+                Passive <span th:text="${passive}" class="badge bg-light text-danger"></span>
+            </a>
         </div>
+    </div>
 
-
-
-
+    <!-- CLIENT LIST -->
     <div class="container">
-
-
-        <h2 class="my-2" >Your Clients</h2>
-
-
+        <h2 class="my-2">Your Clients</h2>
         <hr class="mx-2">
         <div th:if="${#lists.isEmpty(clients)}">
             <p>No clients yet.</p>
         </div>
 
-
-
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center" th:each="client: ${clients}">
                 <div class="d-flex w-100 align-items-center">
-
-                    <h6 class="mb-0" th:classappend="${client.active}? text-dark :text-danger" style="width: 25%;" th:text="${client.firstName + ' ' + client.lastName}" ></h6>
-
-                    <!-- Program -->
+                    <h6 class="mb-0" th:classappend="${client.active}? text-dark :text-danger" style="width: 25%;" th:text="${client.firstName + ' ' + client.lastName}"></h6>
                     <h6 class="mb-0 text-center" style="width: 20%;" th:text="${client.program}">Program</h6>
+                    <h6 class="mb-0 text-center" style="width: 15%;" th:text="${client.currentWeight + ' kg'}"></h6>
 
-                    <!-- Váha -->
-                    <h6 class="mb-0  text-center" style="width: 15%;" th:text="${client.currentWeight + ' ' + 'kg'}"></h6>
-
-                    <!-- Progress -->
                     <div class="progress mx-2" style="width: 30%; height: 20px;">
                         <div class="progress-bar"
                              role="progressbar"
@@ -136,20 +115,17 @@
                         </div>
                     </div>
 
-                    <!-- Edit Button -->
-                    <a th:href="@{'/clients/detail/'+ ${client.clientId}}" class="btn btn-outline-primary ms-auto">Edit</a>
+                    <a th:href="@{'/clients/detail/'+ ${client.clientId}}" class="btn btn-outline-primary ms-auto">Detail</a>
                 </div>
-
             </li>
         </ul>
 
-
     </div>
 
+</main>
 
-
-
-
+<!-- FOOTER -->
+<footer th:replace="~{fragments/layout.html :: footer}" class="mt-auto"></footer>
 <script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
