@@ -38,6 +38,8 @@
           </label>
         </div>
 
+        <input type="hidden" name="backUrl" th:value="${backUrl}" />
+
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Update Training</button>
         <a th:href="@{/clients}" class="btn btn-secondary ms-2">Cancel</a>

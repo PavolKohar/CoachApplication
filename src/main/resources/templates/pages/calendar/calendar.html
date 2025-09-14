@@ -128,8 +128,8 @@
       <td th:text="${training.date + ' - ' + training.time}"></td>
       <td th:text="${training.workout}"></td>
       <td>
-        <a th:href="@{'/training/done/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-success">✔️</a>
         <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-primary">🕐</a>
+        <a th:href="@{'/training/client/done/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-success">✔️</a>
       </td>
     </tr>
     </tbody>
@@ -152,8 +152,8 @@
       <td th:text="${training.date + ' - ' + training.time}"></td>
       <td th:text="${training.workout}"></td>
       <td>
-        <a th:href="@{'/training/done/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-success">✔️</a>
         <a th:href="@{'/training/detail/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-primary">🕐</a>
+        <a th:href="@{'/training/client/done/' + ${training.trainingId} + '/' + ${training.client.clientId}}" class="btn btn-success">✔️</a>
       </td>
     </tr>
     </tbody>

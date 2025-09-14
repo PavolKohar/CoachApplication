@@ -9,6 +9,7 @@ import com.palci.CoachProgram.Models.DTO.PlanDTO;
 import com.palci.CoachProgram.Models.DTO.TrainingDTO;
 import com.palci.CoachProgram.Models.Services.ClientService;
 import com.palci.CoachProgram.Models.Services.TrainingService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
@@ -89,7 +90,7 @@ public class TrainingController {
     }
 
     @GetMapping("/client/done/{trainingId}/{clientId}")
-    public String trainingDoneByUser(@AuthenticationPrincipal UserEntity userEntity, @PathVariable long trainingId,@PathVariable long clientId){
+    public String trainingDoneByUser(@AuthenticationPrincipal UserEntity userEntity, @PathVariable long trainingId, @PathVariable long clientId, HttpServletRequest request){
         TrainingEntity trainingEntity = trainingRepository.findById(trainingId).orElseThrow();
         ClientEntity clientEntity = clientService.getByIdOrThrow(clientId);
         TrainingPlanEntity plan = trainingEntity.getPlan();
@@ -106,14 +107,16 @@ public class TrainingController {
             plan.updateProgress();
             planRepository.save(plan);
         }
+        String referer = request.getHeader("Referer");
 
-        return "redirect:/clients";
+        return "redirect:" + referer;
     }
 
     @GetMapping("/detail/{trainingId}/{clientId}")
     public String renderDetailTrainingForm(@AuthenticationPrincipal UserEntity userEntity,
                                            @PathVariable long trainingId,
                                            @PathVariable long clientId,
+                                           HttpServletRequest request,
                                            Model model) {
 
         TrainingEntity trainingEntity = trainingRepository.findById(trainingId).orElseThrow();
@@ -124,20 +127,22 @@ public class TrainingController {
             throw new AccessDeniedException("You have not right to do this action.");
         }
 
+        String referer = request.getHeader("Referer");
         TrainingDTO trainingDTO = trainingService.toDto(trainingEntity);
+        model.addAttribute("backUrl",referer);
 
         model.addAttribute("trainingDTO", trainingDTO);
         return "pages/training/detail";
     }
 
     @PostMapping("/detail/{trainingId}")
-    public String saveUpdateTraining(@PathVariable long trainingId,@ModelAttribute TrainingDTO trainingDTO){
+    public String saveUpdateTraining(@PathVariable long trainingId,@ModelAttribute TrainingDTO trainingDTO,@RequestParam(required = false) String backUrl){
         trainingService.updateTraining(trainingId,trainingDTO);
         TrainingEntity training = trainingRepository.findById(trainingId).orElseThrow();
         long clientId = training.getClient().getClientId();
 
 
-        return "redirect:/clients/detail/" + clientId;
+        return "redirect:" + (backUrl != null ? backUrl : "/clients");
     }
 
     @GetMapping("/create-training/{clientId}")
