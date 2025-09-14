@@ -253,8 +253,13 @@
 <script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">
+    let originalWeight = [[${originalWeight}]];
     let labels = [[${labels}]];
     let data = [[${data}]];
+
+    labels.unshift("Start");
+    data.unshift(originalWeight);
+
 
     const ctx = document.getElementById('weightChart').getContext('2d');
     const myChart = new Chart(ctx, {

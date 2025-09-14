@@ -55,6 +55,8 @@ public class StatisticController {
         model.addAttribute("client",clientDTO);
 
         // Chart.js - weights
+        double originalWeight = clientEntity.getOriginalWeight();
+        model.addAttribute("originalWeight",originalWeight);
         List<String> dates = weightHistory.stream()
                 .map(entry->entry.getDate().toString())
                 .toList();

@@ -54,6 +54,8 @@ public class ClientDetailController {
         model.addAttribute("history",weightHistory);
 
 
+
+
         List<TrainingEntity> trainingEntities = trainingRepository.findAllByClientOrderByDateAsc(entity);
         trainingEntities = trainingEntities.stream().filter(t-> !t.isDone()).toList();
         model.addAttribute("trainings",trainingEntities);
@@ -62,7 +64,9 @@ public class ClientDetailController {
         model.addAttribute("fiveNextTrainings",nextFiveTrainings);
 
         // Generating values for chart.js - Weight history
-        List<String> dates = weightHistory.stream()
+        double originalWeight = entity.getOriginalWeight();
+        model.addAttribute("originalWeight",originalWeight);
+                List<String> dates = weightHistory.stream()
                 .map(entry->entry.getDate().toString())
                 .toList();
         List<Double> weights = weightHistory.stream()
