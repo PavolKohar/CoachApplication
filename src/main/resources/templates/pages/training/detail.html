@@ -1,58 +1,57 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout.html :: head}">
+<head th:replace="~{fragments/layout.html :: head}"></head>
 
-</head>
-<body class="bg-light" >
+<body class="bg-light d-flex flex-column min-vh-100">
 <header th:replace="~{fragments/layout.html ::header}"></header>
 
-<div class="container mt-5">
-  <div class="card">
-    <div class="card-body">
-      <h3 class="card-title">Edit Training</h3>
+<main class="flex-grow-1">
+  <div class="container mt-5">
+    <div class="card shadow">
+      <div class="card-body">
+        <h3 class="card-title">Edit Training</h3>
 
-      <form th:action="@{'/training/detail/' + ${trainingDTO.trainingId}}" method="post">
-        <!-- Date -->
-        <div class="mb-3">
-          <label for="date" class="form-label">Training Date</label>
-          <input type="date" class="form-control" id="date" name="date" th:value="${trainingDTO.date}" required>
-        </div>
+        <form th:action="@{'/training/detail/' + ${trainingDTO.trainingId}}" method="post">
+          <!-- Date -->
+          <div class="mb-3">
+            <label for="date" class="form-label">Training Date</label>
+            <input type="date" class="form-control" id="date" name="date" th:value="${trainingDTO.date}" required>
+          </div>
 
-        <!-- Time -->
-        <div class="mb-3">
-          <label for="time" class="form-label">Training Time</label>
-          <input type="time" class="form-control" id="time" name="time" th:value="${trainingDTO.time}" required>
-        </div>
+          <!-- Time -->
+          <div class="mb-3">
+            <label for="time" class="form-label">Training Time</label>
+            <input type="time" class="form-control" id="time" name="time" th:value="${trainingDTO.time}" required>
+          </div>
 
-        <!-- Workout -->
-        <div class="mb-3">
-          <label for="workout" class="form-label">Workout Description</label>
-          <input type="text" class="form-control" id="workout" name="workout" th:value="${trainingDTO.workout}" th:text="${trainingDTO.workout}" >
-        </div>
+          <!-- Workout -->
+          <div class="mb-3">
+            <label for="workout" class="form-label">Workout Description</label>
+            <input type="text" class="form-control" id="workout" name="workout"
+                   th:value="${trainingDTO.workout}" placeholder="e.g., Upper body, Cardio..." >
+          </div>
 
-        <!-- Done Checkbox -->
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="done" name="done" th:checked="${trainingDTO.done}">
-          <label class="form-check-label" for="done">
-            Mark as completed
-          </label>
-        </div>
+          <!-- Done Checkbox -->
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="done" name="done" th:checked="${trainingDTO.done}">
+            <label class="form-check-label" for="done">
+              Mark as completed
+            </label>
+          </div>
 
-        <input type="hidden" name="backUrl" th:value="${backUrl}" />
+          <!-- Hidden field for redirection -->
+          <input type="hidden" name="backUrl" th:value="${backUrl}" />
 
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary">Update Training</button>
-        <a th:href="@{/clients}" class="btn btn-secondary ms-2">Cancel</a>
-      </form>
+          <!-- Buttons -->
+          <button type="submit" class="btn btn-primary">Update Training</button>
+          <a th:href="@{/clients}" class="btn btn-secondary ms-2">Cancel</a>
+        </form>
+      </div>
     </div>
   </div>
-</div>
+</main>
 
-
-
-
-
-<footer th:replace="~{fragments/layout.html :: footer}"></footer>
+<footer th:replace="~{fragments/layout.html :: footer}" class="mt-auto"></footer>
 <script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
