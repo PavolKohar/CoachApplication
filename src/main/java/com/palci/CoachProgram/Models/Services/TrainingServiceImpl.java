@@ -4,6 +4,7 @@ import com.palci.CoachProgram.Data.Entities.ClientEntity;
 import com.palci.CoachProgram.Data.Entities.TrainingEntity;
 import com.palci.CoachProgram.Data.Entities.TrainingPlanEntity;
 import com.palci.CoachProgram.Data.Entities.UserEntity;
+import com.palci.CoachProgram.Data.Repositories.ClientRepository;
 import com.palci.CoachProgram.Data.Repositories.TrainingPlanRepository;
 import com.palci.CoachProgram.Data.Repositories.TrainingRepository;
 import com.palci.CoachProgram.Models.DTO.TrainingDTO;
@@ -22,6 +23,8 @@ public class TrainingServiceImpl implements TrainingService{
     TrainingRepository trainingRepository;
     @Autowired
     TrainingPlanRepository trainingPlanRepository;
+    @Autowired
+    ClientRepository clientRepository;
 
     private final Queue<String> twoSplit = new LinkedList<>(Arrays.asList("Full body","Full body"));
     private final Queue<String> threeSplit = new LinkedList<>(Arrays.asList("UpperBody","LowerBody", "FullBody"));
@@ -164,5 +167,32 @@ public class TrainingServiceImpl implements TrainingService{
         dto.setDone(entity.isDone());
 
         return dto;
+    }
+
+    @Override
+    public void createTraining(long clientId, TrainingDTO trainingDTO) {
+        ClientEntity client = clientRepository.findById(clientId).orElseThrow();
+        TrainingEntity training = new TrainingEntity();
+
+        training.setDate(trainingDTO.getDate());
+        training.setDone(false);
+        training.setTime(trainingDTO.getTime());
+        training.setClient(client);
+        training.setUser(client.getOwner());
+        training.setWorkout(trainingDTO.getWorkout());
+
+
+        TrainingPlanEntity plan = trainingDTO.getTrainingPlan();
+        if (plan != null){
+            plan = trainingPlanRepository.findById(plan.getTrainingPlanId()).orElseThrow();
+            plan.setTotalWorkouts(plan.getTotalWorkouts() + 1);
+            training.setPlan(plan);
+            trainingPlanRepository.save(plan);
+        }else {
+            training.setPlan(null);
+        }
+
+
+        trainingRepository.save(training);
     }
 }

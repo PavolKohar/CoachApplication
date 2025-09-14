@@ -1,6 +1,7 @@
 package com.palci.CoachProgram.Models.DTO;
 
 import com.palci.CoachProgram.Data.Entities.ClientEntity;
+import com.palci.CoachProgram.Data.Entities.TrainingPlanEntity;
 import com.palci.CoachProgram.Data.Entities.UserEntity;
 
 import java.time.LocalDate;
@@ -21,6 +22,8 @@ public class TrainingDTO {
     private ClientEntity client;
 
     private UserEntity user;
+
+    private TrainingPlanEntity trainingPlan;
 
     // Getters and setters
 
@@ -79,5 +82,13 @@ public class TrainingDTO {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public TrainingPlanEntity getTrainingPlan() {
+        return trainingPlan;
+    }
+
+    public void setTrainingPlan(TrainingPlanEntity trainingPlan) {
+        this.trainingPlan = trainingPlan;
     }
 }

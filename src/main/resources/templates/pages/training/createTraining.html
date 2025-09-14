@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+
+</head>
+<body class="bg-light" >
+<header th:replace="~{fragments/layout.html ::header}"></header>
+
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="card-title">Create new training</h3>
+
+      <form th:action="@{'/training/create-training/' +${clientId}}" method="post">
+        <!-- Date -->
+        <div class="mb-3">
+          <label for="date" class="form-label">Training Date</label>
+          <input type="date" class="form-control" id="date" name="date" th:value="${trainingDTO.date}" required>
+        </div>
+
+        <!-- Time -->
+        <div class="mb-3">
+          <label for="time" class="form-label">Training Time</label>
+          <input type="time" class="form-control" id="time" name="time" th:value="${trainingDTO.time}" required>
+        </div>
+
+        <!-- Workout -->
+        <div class="mb-3">
+          <label for="workout" class="form-label">Workout Description</label>
+          <input type="text" class="form-control" id="workout" name="workout" th:value="${trainingDTO.workout}" th:text="${trainingDTO.workout}" >
+        </div>
+
+        <div class="mb-3">
+          <label for="planSelect" class="form-label">Training plan</label>
+          <select class="form-select" id="planSelect" name="trainingPlan.trainingPlanId">
+            <!-- Options for existing plans -->
+            <option th:each="plan : ${allTrainingPlans}"
+                    th:value="${plan.trainingPlanId}"
+                    th:text="${#temporals.format(plan.startDate, 'yyyy-MM-dd')} + ' – ' + ${#temporals.format(plan.endDate, 'yyyy-MM-dd')}">
+            </option>
+          </select>
+        </div>
+
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Create Training</button>
+        <a th:href="@{/clients}" class="btn btn-secondary ms-2">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<footer th:replace="~{fragments/layout.html :: footer}"></footer>
+<script th:src="@{/scripts/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

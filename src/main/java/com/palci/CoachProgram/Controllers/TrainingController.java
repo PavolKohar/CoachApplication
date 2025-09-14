@@ -137,4 +137,24 @@ public class TrainingController {
 
         return "redirect:/clients";
     }
+
+    @GetMapping("/create-training/{clientId}")
+    public String renderCreateTrainingForm(@PathVariable long clientId,@ModelAttribute TrainingDTO trainingDTO,Model model){
+        ClientEntity client = clientService.getByIdOrThrow(clientId);
+        List<TrainingPlanEntity> allTrainingPlans = planRepository.findAllByClientOrderByStartDateAsc(client);
+
+        model.addAttribute("allTrainingPlans",allTrainingPlans);
+
+        return "pages/training/createTraining";
+    }
+
+    @PostMapping("/create-training/{clientId}")
+    public String createTraining(@PathVariable long clientId,@ModelAttribute TrainingDTO trainingDTO,Model model){
+
+        trainingService.createTraining(clientId,trainingDTO);
+        model.addAttribute("clientId",clientId);
+
+        return "redirect:/clients";
+
+    }
 }

@@ -20,4 +20,6 @@ public interface TrainingService {
     void updateTraining(long trainingId, TrainingDTO trainingDTO);
 
     TrainingDTO toDto(TrainingEntity entity);
+
+    void createTraining(long clientId,TrainingDTO trainingDTO);
 }

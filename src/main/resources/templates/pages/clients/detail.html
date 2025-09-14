@@ -14,9 +14,12 @@
         <div class="d-flex flex-column justify-content-center">
             <h1 class="mb-0" th:text="${clientDTO.firstName} + ' ' + ${clientDTO.lastName} + ' (' + ${age} + ' y.o)'"></h1>
             <small th:classappend="${clientDTO.active}? text-success : text-danger" th:text="${clientDTO.active}? 'Active' : 'Not active'" ></small>
-            <div>
+            <div class="d-flex">
                 <a th:href="@{'/training/' +${clientDTO.clientId}}" class="btn btn-success me-1">Create plan for <span th:text="${clientDTO.firstName} + ' ' + ${clientDTO.lastName}" ></span></a>
-                <a th:href="@{'/training/create/' +${clientDTO.clientId}}" class="btn btn-success">Add new training</a>
+                <div th:if="${not#lists.isEmpty(plans)}">
+                    <a th:href="@{'/training/create-training/' +${clientDTO.clientId}}" class="btn btn-success">Add new training</a>
+                </div>
+
             </div>
         </div>
 
